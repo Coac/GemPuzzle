@@ -14,11 +14,13 @@ public class PuzzleContext<T> {
 	
 	public void setAI(AbstractArtificialIntelligence ai) {
 		this.ai = ai;
+		this.ai.setContext(this);
 	}
 	
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
+	
 	public boolean hasWin() {
 		for (int i = 0; i < grid.size(); i++) {
 			if(i != this.grid.getTile(i).getgoalIndex()) {
