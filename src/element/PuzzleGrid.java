@@ -50,7 +50,7 @@ public class PuzzleGrid<T extends Comparable<T>> {
 	public int[] getTilesIndexes() {
 		int[] indexes = new int[this.getNbTiles()];
 		for (int i = 0; i < this.getNbTiles(); i++) {
-			indexes[i] = this.tiles.get(i).getgoalIndex();
+			indexes[i] = this.tiles.get(i).getSortedPosition();
 		}
 		return indexes;
 	}
