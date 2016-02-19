@@ -15,9 +15,18 @@ public class PuzzleGrid<T> {
 		this.size = size;
 		tiles = new ArrayList<Tile<T>>();
 	}
+	public int size() {
+		return this.size;
+	}
+	public int nbTiles() {
+		return this.tiles.size();
+	}
 	
 	public Tile<T> getTile(int i, int j) {
 		return tiles.get(i%size + j*size);
+	}
+	public Tile<T> getTile(int i) {
+		return tiles.get(i);
 	}
 	
 	public T getElement(int i, int j) {
