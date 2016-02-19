@@ -6,12 +6,10 @@ import element.PuzzleGrid;
 public class PuzzleContext<T> {
 	
 	private PuzzleGrid<T> grid;
-	private PuzzleGrid<T> goalGrid;
 	private ArtificialIntelligenceInterface ai;
 	
-	public PuzzleContext(PuzzleGrid<T> grid, PuzzleGrid<T> goalGrid) {
+	public PuzzleContext(PuzzleGrid<T> grid) {
 		this.grid = grid;
-		this.goalGrid = goalGrid;
 	}
 	
 	public void setAI(ArtificialIntelligenceInterface ai) {
@@ -21,12 +19,17 @@ public class PuzzleContext<T> {
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
-	public PuzzleGrid<T> getGoal() {
-		return this.grid;
+	public boolean hasWin() {
+		for (int i = 0; i < grid.size(); i++) {
+			if(i != this.grid.getTile(i).getgoalIndex()) {
+				return false;
+			}	
+		}
+		return true;
 	}
 	
-	public boolean hasWin() {
-		return this.grid.equals(this.goalGrid);
+	public void move(Move.MoveDirection move) {
+		this.grid.setMove(new Move(move));
 	}
 
 }
