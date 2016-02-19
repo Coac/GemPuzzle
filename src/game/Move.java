@@ -1,7 +1,7 @@
 package game;
 
 public class Move {
-	public enum MoveDirection { Down, Left, Right, Up};
+	public enum MoveDirection { Down, Left, Right, Up };
 	
 	private MoveDirection move;
 	

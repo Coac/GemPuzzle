@@ -27,5 +27,9 @@ public class PuzzleContext<T> {
 		}
 		return true;
 	}
+	
+	public void move(Move.MoveDirection move) {
+		this.grid.setMove(new Move(move));
+	}
 
 }
