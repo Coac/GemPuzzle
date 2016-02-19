@@ -16,6 +16,9 @@ public class PuzzleGrid<T> {
 		tiles = new ArrayList<Tile<T>>();
 	}
 	public int size() {
+		return this.size;
+	}
+	public int nbTiles() {
 		return this.tiles.size();
 	}
 	
