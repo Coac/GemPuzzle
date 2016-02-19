@@ -28,5 +28,18 @@ public class PuzzleContext<T> {
 	public boolean hasWin() {
 		return this.grid.equals(this.goalGrid);
 	}
+	
+	/**
+	 * Utilise les permutations afin de déterminer si la grille initiale est solvable.
+	 */
+	public boolean isSolvable(){
+		int nombrePermutations = 0;
+		for(int i = 0; i < this.grid.nbTiles(); i++){
+			if(this.grid.getElement(, j)){
+				
+			}
+		}
+		return false;
+	}
 
 }
