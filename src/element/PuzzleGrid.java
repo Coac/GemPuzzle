@@ -4,7 +4,7 @@ import java.util.List;
 
 import game.Move;
 
-public class PuzzleGrid<T extends Comparable<T>> {
+public class PuzzleGrid<T> {
 	
 	private List<Tile<T>> tiles;
 	private int size;

@@ -5,6 +5,6 @@ import java.io.FileNotFoundException;
 
 import element.PuzzleGrid;
 
-public interface AbstractPuzzleGridsParser<T extends Comparable<T>> {
+public interface AbstractPuzzleGridsParser<T> {
 	public abstract PuzzleGrid<T> parseFile(File file) throws FileNotFoundException;
 }

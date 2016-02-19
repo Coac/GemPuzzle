@@ -27,7 +27,7 @@ public class PuzzleGridsIntegerParser implements AbstractPuzzleGridsParser<Integ
 			Tile<Integer> sortedTile = new Tile<Integer>(scanner.nextInt(), i);
 			
 			for (Tile<Integer> t : mixedTiles) {
-				if (t.compareTo(sortedTile) == 0) {
+				if (t.equals(sortedTile)) {
 					t.setSortedPosition(i);
 				}
 			}

@@ -1,6 +1,6 @@
 package element;
 
-public class Tile<T extends Comparable<T>> implements Comparable<Tile<T>> {
+public class Tile<T> {
 	private T value;
 	private int sortedPosition;
 	
@@ -28,7 +28,12 @@ public class Tile<T extends Comparable<T>> implements Comparable<Tile<T>> {
 	}
 	
 	@Override
-	public int compareTo(Tile<T> o) {
-		return this.value.compareTo(o.getValue());
+	public boolean equals(Object obj) {
+		if (obj instanceof Tile) {
+			Tile<?> t = (Tile<?>) obj;
+			return this.value.equals(t.getValue());
+		}
+		
+		return this.value.equals(obj);
 	}
 }
