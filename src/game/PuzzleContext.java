@@ -1,15 +1,15 @@
 package game;
 
 import ai.ArtificialIntelligenceInterface;
-import element.Grid;
+import element.PuzzleGrid;
 
 public class PuzzleContext<T> {
 	
-	private Grid<T> grid;
-	private Grid<T> goalGrid;
+	private PuzzleGrid<T> grid;
+	private PuzzleGrid<T> goalGrid;
 	private ArtificialIntelligenceInterface ai;
 	
-	public PuzzleContext(Grid<T> grid, Grid<T> goalGrid) {
+	public PuzzleContext(PuzzleGrid<T> grid, PuzzleGrid<T> goalGrid) {
 		this.grid = grid;
 		this.goalGrid = goalGrid;
 	}
@@ -18,10 +18,10 @@ public class PuzzleContext<T> {
 		this.ai = ai;
 	}
 	
-	public Grid<T> getGrid() {
+	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
-	public Grid<T> getGoal() {
+	public PuzzleGrid<T> getGoal() {
 		return this.grid;
 	}
 	
