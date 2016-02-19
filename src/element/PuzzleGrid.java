@@ -17,7 +17,7 @@ public class PuzzleGrid<T extends Comparable<T>> {
 	public int size() {
 		return this.size;
 	}
-	public int nbTiles() {
+	public int getNbTiles() {
 		return this.tiles.size();
 	}
 	
@@ -45,6 +45,14 @@ public class PuzzleGrid<T extends Comparable<T>> {
 		default:
 			throw new RuntimeException("Illegal move");
 		}
+	}
+	
+	public int[] getTilesIndexes() {
+		int[] indexes = new int[this.getNbTiles()];
+		for (int i = 0; i < this.getNbTiles(); i++) {
+			indexes[i] = this.tiles.get(i).getgoalIndex();
+		}
+		return indexes;
 	}
 	
 	private void swapIndex(int index1, int index2) {
