@@ -3,16 +3,16 @@ package game;
 import ai.AbstractArtificialIntelligence;
 import element.PuzzleGrid;
 
-public class PuzzleContext<T extends Comparable<T>> {
+public class PuzzleContext<T> {
 	
 	private PuzzleGrid<T> grid;
-	private AbstractArtificialIntelligence ai;
+	private AbstractArtificialIntelligence<T> ai;
 	
 	public PuzzleContext(PuzzleGrid<T> grid) {
 		this.grid = grid;
 	}
 	
-	public void setAI(AbstractArtificialIntelligence ai) {
+	public void setAI(AbstractArtificialIntelligence<T> ai) {
 		this.ai = ai;
 		this.ai.setContext(this);
 	}

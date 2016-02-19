@@ -4,7 +4,7 @@ import java.util.List;
 
 import game.Move;
 
-public class PuzzleGrid<T extends Comparable<T>> {
+public class PuzzleGrid<T> {
 	
 	private List<Tile<T>> tiles;
 	private int size;
@@ -35,13 +35,25 @@ public class PuzzleGrid<T extends Comparable<T>> {
 	public void setMove(Move move) {
 		switch(move.get()) {
 		case Down:
+			if(nullIndex + size >= getNbTiles())
+				throw new RuntimeException("Illegal move");
 			swapIndex(nullIndex, nullIndex + size);
+			break;
 		case Left:
+			if(nullIndex -1 < 0)
+				throw new RuntimeException("Illegal move");
 			swapIndex(nullIndex, nullIndex - 1);
+			break;
 		case Right:
+			if(nullIndex + 1 >= getNbTiles())
+				throw new RuntimeException("Illegal move");
 			swapIndex(nullIndex, nullIndex + 1);
+			break;
 		case Up:
+			if(nullIndex - size < 0)
+				throw new RuntimeException("Illegal move");
 			swapIndex(nullIndex, nullIndex - size);
+			break;
 		default:
 			throw new RuntimeException("Illegal move");
 		}
