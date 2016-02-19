@@ -2,17 +2,17 @@ package element;
 
 public class Tile<T> {
 	private T value;
-	private int index;
+	private int goalIndex;
 	
-	public Tile(T value, int index) {
+	public Tile(T value, int goalIndex) {
 		this.value = value;
-		this.index = index;
+		this.goalIndex = goalIndex;
 	}
 	public T getValue() {
 		return value;
 	}
 	
-	public int getIndex() {
-		return this.index;
+	public int getgoalIndex() {
+		return this.goalIndex;
 	}
 }
