@@ -6,15 +6,26 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class PanelGame extends JPanel {
 	private static final int MARGIN_CASE = 5;
+	private boolean etitableMode = false;
+
+	// private PuzzleContext<String> puzzleContext;
 
 	public PanelGame() {
-
+		setFocusable(true);
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println("a");
+			}
+		});
 	}
 
 	@Override
@@ -31,6 +42,7 @@ public class PanelGame extends JPanel {
 		FontMetrics metrics = g.getFontMetrics(font);
 		g.setFont(font);
 
+		// Liste des cases
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 
