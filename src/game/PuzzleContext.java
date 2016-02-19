@@ -1,32 +1,37 @@
 package game;
 
-import ai.ArtificialIntelligenceInterface;
+import ai.AbstractArtificialIntelligence;
 import element.PuzzleGrid;
 
-public class PuzzleContext<T> {
+public class PuzzleContext<T extends Comparable<T>> {
 	
 	private PuzzleGrid<T> grid;
-	private int[] goalGrid;
-	private ArtificialIntelligenceInterface ai;
+	private AbstractArtificialIntelligence ai;
 	
-	public PuzzleContext(PuzzleGrid<T> grid, int[] goalGrid) {
+	public PuzzleContext(PuzzleGrid<T> grid) {
 		this.grid = grid;
-		this.goalGrid = goalGrid;
 	}
 	
-	public void setAI(ArtificialIntelligenceInterface ai) {
+	public void setAI(AbstractArtificialIntelligence ai) {
 		this.ai = ai;
+		this.ai.setContext(this);
 	}
 	
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
-	public int[] getGoal() {
-		return this.goalGrid;
-	}
 	
 	public boolean hasWin() {
-		return this.grid.equals(this.goalGrid);
+		for (int i = 0; i < grid.size(); i++) {
+			if(i != this.grid.getTile(i).getGoalIndex()) {
+				return false;
+			}	
+		}
+		return true;
+	}
+	
+	public void move(Move.MoveDirection move) {
+		this.grid.setMove(new Move(move));
 	}
 
 }

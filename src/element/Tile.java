@@ -1,18 +1,34 @@
 package element;
 
-public class Tile<T> {
+public class Tile<T extends Comparable<T>> implements Comparable<Tile<T>> {
 	private T value;
-	private int index;
+	private int sortedPosition;
 	
-	public Tile(T value, int index) {
+	public Tile(T value, int sortedPosition) {
 		this.value = value;
-		this.index = index;
+		this.sortedPosition = sortedPosition;
 	}
 	public T getValue() {
 		return value;
 	}
 	
-	public int getIndex() {
-		return this.index;
+	/**
+	 * @deprecated
+	 */
+	public int getGoalIndex() {
+		return this.sortedPosition;
+	}
+	
+	public int getSortedPosition() {
+		return this.sortedPosition;
+	}
+	
+	public void setSortedPosition(int sortedPosition) {
+		this.sortedPosition = sortedPosition;
+	}
+	
+	@Override
+	public int compareTo(Tile<T> o) {
+		return this.value.compareTo(o.getValue());
 	}
 }
