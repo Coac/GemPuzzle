@@ -16,7 +16,7 @@ public class Tile<T> {
 	 * @deprecated
 	 */
 	public int getGoalIndex() {
-		return this.sortedPosition;
+		return this.getSortedPosition();
 	}
 	
 	public int getSortedPosition() {
