@@ -3,7 +3,7 @@ package game;
 import ai.ArtificialIntelligenceInterface;
 import element.PuzzleGrid;
 
-public class PuzzleContext<T> {
+public class PuzzleContext<T extends Comparable<T>> {
 	
 	private PuzzleGrid<T> grid;
 	private ArtificialIntelligenceInterface ai;
@@ -21,7 +21,7 @@ public class PuzzleContext<T> {
 	}
 	public boolean hasWin() {
 		for (int i = 0; i < grid.size(); i++) {
-			if(i != this.grid.getTile(i).getgoalIndex()) {
+			if(i != this.grid.getTile(i).getGoalIndex()) {
 				return false;
 			}	
 		}
