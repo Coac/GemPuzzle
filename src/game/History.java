@@ -3,11 +3,11 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Historic {
+public class History {
 	
 	private List<Move> moves;
 	
-	public Historic() {
+	public History() {
 		this.moves = new ArrayList<Move>();
 	}
 	

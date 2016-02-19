@@ -1,18 +1,18 @@
 package game;
 
-import ai.ArtificialIntelligenceInterface;
+import ai.AbstractArtificialIntelligence;
 import element.PuzzleGrid;
 
 public class PuzzleContext<T> {
 	
 	private PuzzleGrid<T> grid;
-	private ArtificialIntelligenceInterface ai;
+	private AbstractArtificialIntelligence ai;
 	
 	public PuzzleContext(PuzzleGrid<T> grid) {
 		this.grid = grid;
 	}
 	
-	public void setAI(ArtificialIntelligenceInterface ai) {
+	public void setAI(AbstractArtificialIntelligence ai) {
 		this.ai = ai;
 	}
 	
