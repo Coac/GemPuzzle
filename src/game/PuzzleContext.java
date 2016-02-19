@@ -32,10 +32,20 @@ public class PuzzleContext<T> {
 	 * Utilise les permutations afin de déterminer si la grille initiale est solvable.
 	 */
 	public boolean isSolvable(){
+		int[] indexes = this.grid.getTilesIndexes();
+		int pariteVide = 0;
 		int nombrePermutations = 0;
-		for(int i = 0; i < this.grid.nbTiles(); i++){
-			if(this.grid.getElement(, j)){
-				
+		int size = this.grid.size();
+		
+		
+		for(int i = 0; i < size; i++){
+			for(int j = 0; j < size; j++){
+				int valeur = indexes[i*size+j];
+				if(valeur!= i+j){ 
+					indexes[i][j] = indexes[valeur/size][valeur%size];
+					//taq[valeur/size][valeur%size]=valeur;
+					nombrePermutations++;
+				}
 			}
 		}
 		return false;
