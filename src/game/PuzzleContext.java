@@ -6,10 +6,10 @@ import element.PuzzleGrid;
 public class PuzzleContext<T> {
 	
 	private PuzzleGrid<T> grid;
-	private PuzzleGrid<T> goalGrid;
+	private int[] goalGrid;
 	private ArtificialIntelligenceInterface ai;
 	
-	public PuzzleContext(PuzzleGrid<T> grid, PuzzleGrid<T> goalGrid) {
+	public PuzzleContext(PuzzleGrid<T> grid, int[] goalGrid) {
 		this.grid = grid;
 		this.goalGrid = goalGrid;
 	}
@@ -21,8 +21,8 @@ public class PuzzleContext<T> {
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
-	public PuzzleGrid<T> getGoal() {
-		return this.grid;
+	public int[] getGoal() {
+		return this.goalGrid;
 	}
 	
 	public boolean hasWin() {
