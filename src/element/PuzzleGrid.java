@@ -1,6 +1,5 @@
 package element;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import game.Move;
@@ -11,26 +10,26 @@ public class PuzzleGrid<T> {
 	private int size;
 	private int nullIndex;
 	
-	public PuzzleGrid(int size) {
+	public PuzzleGrid(int size, List<Tile<T>> tiles) {
 		this.size = size;
-		tiles = new ArrayList<Tile<T>>();
+		this.tiles = tiles;
 	}
 	public int size() {
 		return this.size;
 	}
-	public int nbTiles() {
+	public int getNbTiles() {
 		return this.tiles.size();
 	}
 	
 	public Tile<T> getTile(int i, int j) {
-		return tiles.get(i%size + j*size);
+		return this.tiles.get(i%size + j*size);
 	}
 	public Tile<T> getTile(int i) {
 		return tiles.get(i);
 	}
 	
 	public T getElement(int i, int j) {
-		return getTile(i,j).getValue();
+		return this.getTile(i,j).getValue();
 	}
 	
 	public void setMove(Move move) {
@@ -48,6 +47,14 @@ public class PuzzleGrid<T> {
 		}
 	}
 	
+	public int[] getTilesIndexes() {
+		int[] indexes = new int[this.getNbTiles()];
+		for (int i = 0; i < this.getNbTiles(); i++) {
+			indexes[i] = this.tiles.get(i).getgoalIndex();
+		}
+		return indexes;
+	}
+	
 	private void swapIndex(int index1, int index2) {
 		Tile<T> temp = this.tiles.get(index1);
 		this.tiles.set(index1,this.tiles.get(index2));
@@ -61,7 +68,6 @@ public class PuzzleGrid<T> {
 	}
 	
 	private void setTile(int i, int j, Tile<T> newTile) {
-		tiles.set(i%size + j*size, newTile);
+		this.tiles.set(i%size + j*size, newTile);
 	}
-
 }

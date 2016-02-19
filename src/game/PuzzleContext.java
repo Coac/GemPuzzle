@@ -1,24 +1,26 @@
 package game;
 
-import ai.ArtificialIntelligenceInterface;
+import ai.AbstractArtificialIntelligence;
 import element.PuzzleGrid;
 
 public class PuzzleContext<T> {
 	
 	private PuzzleGrid<T> grid;
-	private ArtificialIntelligenceInterface ai;
+	private AbstractArtificialIntelligence ai;
 	
 	public PuzzleContext(PuzzleGrid<T> grid) {
 		this.grid = grid;
 	}
 	
-	public void setAI(ArtificialIntelligenceInterface ai) {
+	public void setAI(AbstractArtificialIntelligence ai) {
 		this.ai = ai;
+		this.ai.setContext(this);
 	}
 	
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
 	}
+	
 	public boolean hasWin() {
 		for (int i = 0; i < grid.size(); i++) {
 			if(i != this.grid.getTile(i).getgoalIndex()) {
@@ -33,22 +35,35 @@ public class PuzzleContext<T> {
 	 */
 	public boolean isSolvable(){
 		int[] indexes = this.grid.getTilesIndexes();
-		int pariteVide = 0;
-		int nombrePermutations = 0;
+		int voidIndex = indexes.length-1;
+		int voidParity = 0;
+		int permutationsNumber = 0;
 		int size = this.grid.size();
 		
+		//First, we calculate the void "parity"
+		int i = 0; 
+		while(indexes[i] != voidIndex){
+			 i++;
+		}
+		voidParity = (size-1)*2 - i;
 		
-		for(int i = 0; i < size; i++){
+		//we calculate the number of permutations needed
+		for(i = 0; i < size; i++){
 			for(int j = 0; j < size; j++){
 				int valeur = indexes[i*size+j];
 				if(valeur!= i+j){ 
-					indexes[i][j] = indexes[valeur/size][valeur%size];
-					//taq[valeur/size][valeur%size]=valeur;
-					nombrePermutations++;
+					indexes[i*size+j] = indexes[valeur];
+					indexes[valeur]=valeur;
+					permutationsNumber++;
+					j--;
 				}
 			}
 		}
-		return false;
+		return ((voidParity%2)^(permutationsNumber%2)) == 0;
+	}	
+	
+	public void move(Move.MoveDirection move) {
+		this.grid.setMove(new Move(move));
 	}
 
 }
