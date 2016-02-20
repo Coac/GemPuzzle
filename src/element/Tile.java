@@ -2,17 +2,38 @@ package element;
 
 public class Tile<T> {
 	private T value;
-	private int goalIndex;
+	private int sortedPosition;
 	
-	public Tile(T value, int goalIndex) {
+	public Tile(T value, int sortedPosition) {
 		this.value = value;
-		this.goalIndex = goalIndex;
+		this.sortedPosition = sortedPosition;
 	}
 	public T getValue() {
 		return value;
 	}
 	
-	public int getgoalIndex() {
-		return this.goalIndex;
+	/**
+	 * @deprecated
+	 */
+	public int getGoalIndex() {
+		return this.getSortedPosition();
+	}
+	
+	public int getSortedPosition() {
+		return this.sortedPosition;
+	}
+	
+	public void setSortedPosition(int sortedPosition) {
+		this.sortedPosition = sortedPosition;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Tile) {
+			Tile<?> t = (Tile<?>) obj;
+			return this.value.equals(t.getValue());
+		}
+		
+		return this.value.equals(obj);
 	}
 }
