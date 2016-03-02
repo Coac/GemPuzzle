@@ -65,5 +65,10 @@ public class PuzzleContext<T> {
 	public void move(Move.MoveDirection move) {
 		this.grid.setMove(new Move(move));
 	}
+	
+	@Override
+	public String toString() {
+		return this.grid.toString();
+	}
 
 }
