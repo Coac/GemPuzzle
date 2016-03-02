@@ -96,25 +96,25 @@ public class PuzzleGrid<T> {
 	public int getNullIndex() {
 		return nullIndex;
 	}
-	
+
 	public boolean isSolved() {
 		for (int i = 0; i < this.getNbTiles(); i++) {
-			if(this.tiles.get(i).getSortedPosition() != i) {
+			if (this.tiles.get(i).getSortedPosition() != i) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "";
 		for (int i = 0; i < this.getNbTiles(); i++) {
-			if(i % this.size() == 0) {
+			if (i % this.size() == 0) {
 				str += "\n";
 			}
 			str += tiles.get(i).getValue().toString() + "\t";
-			
+
 		}
 		return str;
 	}
