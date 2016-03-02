@@ -39,9 +39,6 @@ public class PuzzleGrid<T> {
 	public T getElement(int i, int j) {
 		return this.getTile(i, j).getValue();
 	}
-	public int getNullIndex(){
-		return this.nullIndex;
-	}
 
 	public boolean setMove(Move move) {
 		switch (move.get()) {
