@@ -95,6 +95,15 @@ public class PuzzleGrid<T> {
 		return nullIndex;
 	}
 	
+	public boolean isSolved() {
+		for (int i = 0; i < this.getNbTiles(); i++) {
+			if(this.tiles.get(i).getSortedPosition() != i) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		String str = "";

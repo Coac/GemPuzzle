@@ -66,6 +66,10 @@ public class PuzzleContext<T> {
 		this.grid.setMove(new Move(move));
 	}
 	
+	public boolean isSolved() {
+		return this.grid.isSolved();
+	}
+	
 	@Override
 	public String toString() {
 		return this.grid.toString();
