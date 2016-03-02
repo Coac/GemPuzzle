@@ -14,7 +14,7 @@ public class PuzzleContext<T> {
 	
 	public void setAI(AbstractArtificialIntelligence<T> ai) {
 		this.ai = ai;
-		this.ai.setContext(this);
+		this.ai.setGrid(this.grid);
 	}
 	
 	public PuzzleGrid<T> getGrid() {
