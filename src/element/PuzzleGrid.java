@@ -179,4 +179,14 @@ public class PuzzleGrid<T> {
 		}
 		return list;
 	}
+
+	public int estimateError() {
+		int count = 0;
+		for (int i = 0; i < this.getNbTiles(); i++) {
+			if(this.tiles.get(i).getSortedPosition() != i) {
+				count++;
+			}
+		}
+		return count;
+	}
 }

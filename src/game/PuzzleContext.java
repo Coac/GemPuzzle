@@ -33,6 +33,7 @@ public class PuzzleContext<T> {
 	public boolean isSolvable() {
 		return this.grid.isSolvable();
 	}
+	
 	public void move(Move.MoveDirection move) {
 		this.grid.setMove(new Move(move));
 	}
