@@ -17,6 +17,8 @@ public class PanelControl extends JPanel implements ActionListener {
 	private JButton bouttonNew;
 	private JButton bouttonOpen;
 	private JButton bouttonSave;
+	
+	private PanelControl panelControl;
 
 	public PanelControl() {
 		JPanel panel1 = new JPanel();
@@ -57,7 +59,7 @@ public class PanelControl extends JPanel implements ActionListener {
 						return "AI 2";
 					}
 				} });
-		add(listAI);
+		// add(listAI);
 	}
 
 	@Override
