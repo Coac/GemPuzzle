@@ -118,24 +118,33 @@ public class PuzzleGrid<T> {
 	 */
 	public boolean isSolvable(){
 		int[] indexes = this.getTilesIndexes();
-		int voidIndex = indexes.length-1;
 		int voidParity = 0;
 		int permutationsNumber = 0;
-		int size = this.size();
 		
 		//First, we calculate the void "parity"
 		int i = 0; 
-		while(indexes[i] != voidIndex){
+		while(indexes[i] != this.nullIndex){
 			 i++;
 		}
+		/*
 		voidParity = (size-1)*2 - i;
+		*/
+		voidParity = (this.nullIndex / this.size) + (this.nullIndex % this.size) - i;
+		//need positive integer
+		if(voidParity < 0)
+			voidParity = -voidParity;
 		
-		//we calculate the number of permutations needed
-		for(i = 0; i < size; i++){
-			for(int j = 0; j < size; j++){
-				int valeur = indexes[i*size+j];
+
+		/* we calculate the number of permutations needed to solve. Based on the
+		 * fact that the tiles are indexed from 0 to n*n-1 (with n being the
+		 * size). So the tiles indexed k should be at the index k of the
+		 * "indexes" array
+		 */
+		for(i = 0; i < this.size; i++){
+			for(int j = 0; j < this.size; j++){
+				int valeur = indexes[i*this.size+j];
 				if(valeur!= i+j){ 
-					indexes[i*size+j] = indexes[valeur];
+					indexes[i*this.size+j] = indexes[valeur];
 					indexes[valeur]=valeur;
 					permutationsNumber++;
 					j--;
