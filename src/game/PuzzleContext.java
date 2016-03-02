@@ -30,6 +30,38 @@ public class PuzzleContext<T> {
 		return true;
 	}
 	
+	/**
+	 * Utilise les permutations afin de déterminer si la grille initiale est solvable.
+	 */
+	public boolean isSolvable(){
+		int[] indexes = this.grid.getTilesIndexes();
+		int voidIndex = indexes.length-1;
+		int voidParity = 0;
+		int permutationsNumber = 0;
+		int size = this.grid.size();
+		
+		//First, we calculate the void "parity"
+		int i = 0; 
+		while(indexes[i] != voidIndex){
+			 i++;
+		}
+		voidParity = (size-1)*2 - i;
+		
+		//we calculate the number of permutations needed
+		for(i = 0; i < size; i++){
+			for(int j = 0; j < size; j++){
+				int valeur = indexes[i*size+j];
+				if(valeur!= i+j){ 
+					indexes[i*size+j] = indexes[valeur];
+					indexes[valeur]=valeur;
+					permutationsNumber++;
+					j--;
+				}
+			}
+		}
+		return ((voidParity%2)^(permutationsNumber%2)) == 0;
+	}	
+	
 	public void move(Move.MoveDirection move) {
 		this.grid.setMove(new Move(move));
 	}
