@@ -1,18 +1,14 @@
 package ai;
 
+import element.PuzzleGrid;
 import game.History;
 import game.Move;
-import game.PuzzleContext;
 
 public abstract class AbstractArtificialIntelligence<T> {
-	protected PuzzleContext<T> context;
+	protected PuzzleGrid<T> grid;
 	
-	public AbstractArtificialIntelligence() {
-		
-	}
-	
-	public void setContext(PuzzleContext<T> context) {
-		this.context = context;
+	public void setGrid(PuzzleGrid<T> grid) {
+		this.grid = grid;
 	}
 	
 	public abstract History solve();
