@@ -1,5 +1,6 @@
 package element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import game.Move;
@@ -18,6 +19,11 @@ public class PuzzleGrid<T> {
 		this.size = size;
 		this.tiles = tiles;
 		this.nullIndex = nullIndex;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public PuzzleGrid<T> clone() {
+		return new PuzzleGrid<T>(this.size, (List<Tile<T>>)((ArrayList<Tile<T>>) this.tiles).clone(), this.nullIndex);
 	}
 
 	public int size() {
