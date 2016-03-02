@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.Move;
+import game.Move.MoveDirection;
 
 public class PuzzleGrid<T> {
 
@@ -155,5 +156,27 @@ public class PuzzleGrid<T> {
 			
 		}
 		return str;
+	}
+
+	public List<PuzzleGrid<T>> getAdjacentPuzzles() {
+		List<PuzzleGrid<T>> list = new ArrayList<PuzzleGrid<T>>();
+		
+		PuzzleGrid<T> puzzleUp = this.clone();
+		if(puzzleUp.setMove(new Move(MoveDirection.Up))) {
+			list.add(puzzleUp);
+		}
+		PuzzleGrid<T> puzzleLeft = this.clone();
+		if(puzzleLeft.setMove(new Move(MoveDirection.Left))) {
+			list.add(puzzleLeft);
+		}
+		PuzzleGrid<T> puzzleDown = this.clone();
+		if(puzzleDown.setMove(new Move(MoveDirection.Down))) {
+			list.add(puzzleDown);
+		}
+		PuzzleGrid<T> puzzleRight = this.clone();
+		if(puzzleRight.setMove(new Move(MoveDirection.Right))) {
+			list.add(puzzleRight);
+		}
+		return list;
 	}
 }
