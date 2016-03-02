@@ -12,8 +12,12 @@ public class Window extends JFrame {
 		// New, load, save
 
 		setLayout(new BorderLayout());
-		add(new PanelGame(), BorderLayout.CENTER);
-		add(new PanelControl(), BorderLayout.WEST);
+
+		PanelGame panelGame = new PanelGame();
+		add(panelGame, BorderLayout.CENTER);
+
+		PanelControl panelControl = new PanelControl();
+		add(panelControl, BorderLayout.WEST);
 
 		setSize(800, 600);
 		setLocationRelativeTo(this);

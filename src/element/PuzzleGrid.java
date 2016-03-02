@@ -90,4 +90,8 @@ public class PuzzleGrid<T> {
 	private void setTile(int i, int j, Tile<T> newTile) {
 		this.tiles.set(i % size + j * size, newTile);
 	}
+
+	public int getNullIndex() {
+		return nullIndex;
+	}
 }
