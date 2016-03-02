@@ -27,6 +27,10 @@ public class PanelGame extends JPanel implements MoveListener {
 
 	private PuzzleContext<Integer> puzzleContext;
 
+	private MoveDirection animationDirection = MoveDirection.Up;
+	private double animationProgress = 1;
+	private double animationTile = 0;
+
 	public PanelGame() {
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
@@ -63,24 +67,27 @@ public class PanelGame extends JPanel implements MoveListener {
 	}
 
 	public void move(MoveDirection moveDirection) {
-		puzzleContext.move(moveDirection);
-		switch (moveDirection) {
-		case Up:
-			
-			break;
-		case Down:
-			
-			break;
-		case Left:
-			
-			break;
-		case Right:
-			
-			break;
-		default:
-			break;
+		animationTile = puzzleContext.getGrid().getNullIndex();
+		if (puzzleContext.move(moveDirection)) {
+			animationDirection = moveDirection;
+
+			new Thread(new Runnable() {
+				public void run() {
+					animationProgress = 0;
+					while (animationProgress < 1) {
+						animationProgress += 0.1;
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						repaint();
+					}
+					animationProgress = 1;
+					repaint();
+				}
+			}).start();
 		}
-		repaint();
 	}
 
 	@Override
@@ -101,26 +108,60 @@ public class PanelGame extends JPanel implements MoveListener {
 		// Cases
 		for (int j = 0; j < n; j++) {
 			for (int i = 0; i < n; i++) {
-				if (i + n * j == puzzleContext.getGrid().getNullIndex()) {
-					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1,
-							new float[] { 5, 5 }, 0));
-					g.setColor(new Color(100, 100, 100));
-					g.drawRoundRect(2 * MARGIN_CASE + i * sizeCase, 2 * MARGIN_CASE + j * sizeCase,
-							sizeCase - MARGIN_CASE, sizeCase - MARGIN_CASE, 16, 16);
-				} else {
+				if (i + n * j != puzzleContext.getGrid().getNullIndex()) {
 					g.setStroke(new BasicStroke(2));
 					g.setColor(new Color(200, 200, 200));
-					g.fillRoundRect(2 * MARGIN_CASE + i * sizeCase, 2 * MARGIN_CASE + j * sizeCase,
-							sizeCase - MARGIN_CASE, sizeCase - MARGIN_CASE, 16, 16);
+
+					double x = i * sizeCase;
+					double y = j * sizeCase;
+
+					if (i + n * j == animationTile) {
+						if (animationDirection.equals(MoveDirection.Left)) {
+							x = (i - (1 - animationProgress)) * sizeCase;
+						} else if (animationDirection.equals(MoveDirection.Right)) {
+							x = (i + (1 - animationProgress)) * sizeCase;
+						}
+
+						if (animationDirection.equals(MoveDirection.Up)) {
+							y = (j - (1 - animationProgress)) * sizeCase;
+						} else if (animationDirection.equals(MoveDirection.Down)) {
+							y = (j + (1 - animationProgress)) * sizeCase;
+						}
+					}
+
+					g.fillRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
+							sizeCase - MARGIN_CASE, 16, 16);
 
 					g.setColor(new Color(100, 100, 100));
-					g.drawRoundRect(2 * MARGIN_CASE + i * sizeCase, 2 * MARGIN_CASE + j * sizeCase,
-							sizeCase - MARGIN_CASE, sizeCase - MARGIN_CASE, 16, 16);
+					g.drawRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
+							sizeCase - MARGIN_CASE, 16, 16);
 
 					String str = puzzleContext.getGrid().getElement(i, j).toString();
 					int fontX = (sizeCase - metrics.stringWidth(str)) / 2;
 					int fontY = (sizeCase + metrics.getAscent() - metrics.getDescent()) / 2;
-					g.drawString(str, 2 * MARGIN_CASE + i * sizeCase + fontX, 2 * MARGIN_CASE + j * sizeCase + fontY);
+					g.drawString(str, 2 * MARGIN_CASE + (int) x + fontX, 2 * MARGIN_CASE + (int) y + fontY);
+				} else {
+					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1,
+							new float[] { 5, 5 }, 0));
+					g.setColor(new Color(100, 100, 100));
+
+					double x = i * sizeCase;
+					double y = j * sizeCase;
+
+					if (animationDirection.equals(MoveDirection.Left)) {
+						x = (i + (1 - animationProgress)) * sizeCase;
+					} else if (animationDirection.equals(MoveDirection.Right)) {
+						x = (i - (1 - animationProgress)) * sizeCase;
+					}
+
+					if (animationDirection.equals(MoveDirection.Up)) {
+						y = (j + (1 - animationProgress)) * sizeCase;
+					} else if (animationDirection.equals(MoveDirection.Down)) {
+						y = (j - (1 - animationProgress)) * sizeCase;
+					}
+
+					g.drawRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
+							sizeCase - MARGIN_CASE, 16, 16);
 				}
 			}
 		}

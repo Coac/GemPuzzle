@@ -62,8 +62,8 @@ public class PuzzleContext<T> {
 		return ((voidParity%2)^(permutationsNumber%2)) == 0;
 	}	
 	
-	public void move(Move.MoveDirection move) {
-		this.grid.setMove(new Move(move));
+	public boolean move(Move.MoveDirection move) {
+		return this.grid.setMove(new Move(move));
 	}
 	
 	public boolean isSolved() {
