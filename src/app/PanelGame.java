@@ -8,10 +8,15 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import element.PuzzleGrid;
 import game.PuzzleContext;
+import parser.PuzzleGridsIntegerParser;
 
 @SuppressWarnings("serial")
 public class PanelGame extends JPanel {
@@ -19,9 +24,17 @@ public class PanelGame extends JPanel {
 
 	private boolean editable = false;
 
-	private PuzzleContext<String> puzzleContext;
+	private PuzzleContext<Integer> puzzleContext;
 
 	public PanelGame() {
+		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
+		try {
+			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("test.txt")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		setFocusable(true);
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -58,7 +71,7 @@ public class PanelGame extends JPanel {
 				g.drawRoundRect(2 * MARGIN_CASE + i * sizeCase, 2 * MARGIN_CASE + j * sizeCase, sizeCase - MARGIN_CASE,
 						sizeCase - MARGIN_CASE, 16, 16);
 
-				String str = (1 + i + n * j) + "";
+				String str = puzzleContext.getGrid().getElement(i, j).toString();
 				int fontX = (sizeCase - metrics.stringWidth(str)) / 2;
 				int fontY = (sizeCase + metrics.getAscent() - metrics.getDescent()) / 2;
 				g.drawString(str, 2 * MARGIN_CASE + i * sizeCase + fontX, 2 * MARGIN_CASE + j * sizeCase + fontY);
