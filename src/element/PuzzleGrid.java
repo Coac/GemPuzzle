@@ -40,31 +40,32 @@ public class PuzzleGrid<T> {
 		return this.getTile(i, j).getValue();
 	}
 
-	public void setMove(Move move) {
+	public boolean setMove(Move move) {
 		switch (move.get()) {
 		case Down:
 			if (nullIndex + size >= getNbTiles())
-				throw new RuntimeException("Illegal move");
+				return false;
 			swapIndex(nullIndex, nullIndex + size);
 			break;
 		case Left:
-			if (nullIndex - 1 < 0)
-				throw new RuntimeException("Illegal move");
+			if (nullIndex % size - 1 < 0)
+				return false;
 			swapIndex(nullIndex, nullIndex - 1);
 			break;
 		case Right:
-			if (nullIndex + 1 >= getNbTiles())
-				throw new RuntimeException("Illegal move");
+			if (nullIndex % size + 1 >= size)
+				return false;
 			swapIndex(nullIndex, nullIndex + 1);
 			break;
 		case Up:
 			if (nullIndex - size < 0)
-				throw new RuntimeException("Illegal move");
+				return false;
 			swapIndex(nullIndex, nullIndex - size);
 			break;
 		default:
-			throw new RuntimeException("Illegal move");
+			return false;
 		}
+		return true;
 	}
 
 	public int[] getTilesIndexes() {
@@ -79,6 +80,7 @@ public class PuzzleGrid<T> {
 		Tile<T> temp = this.tiles.get(index1);
 		this.tiles.set(index1, this.tiles.get(index2));
 		this.tiles.set(index2, temp);
+		nullIndex = index2;
 	}
 
 	private void swapCoord(int i1, int j1, int i2, int j2) {

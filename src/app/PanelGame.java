@@ -6,21 +6,21 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
+import game.Move.MoveDirection;
 import game.PuzzleContext;
 import parser.PuzzleGridsIntegerParser;
 
 @SuppressWarnings("serial")
-public class PanelGame extends JPanel {
+public class PanelGame extends JPanel implements MoveListener {
 	private static final int MARGIN_CASE = 5;
 
 	private boolean editable = false;
@@ -30,21 +30,57 @@ public class PanelGame extends JPanel {
 	public PanelGame() {
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
-			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("test.txt")));
+			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
-		Action doNothing = new AbstractAction() {
-		    public void actionPerformed(ActionEvent e) {
-		        System.out.println("a");
-		    }
-		};
-		getInputMap().put(KeyStroke.getKeyStroke("F2"),
-		                            "doNothing");
-		getActionMap().put("doNothing",
-		                             doNothing);
+
+		// Keypressed listener
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+			public boolean dispatchKeyEvent(KeyEvent e) {
+				if (e.getID() == KeyEvent.KEY_PRESSED) {
+					switch (e.getKeyCode()) {
+					case KeyEvent.VK_UP:
+						move(MoveDirection.Up);
+						break;
+					case KeyEvent.VK_DOWN:
+						move(MoveDirection.Down);
+						break;
+					case KeyEvent.VK_LEFT:
+						move(MoveDirection.Left);
+						break;
+					case KeyEvent.VK_RIGHT:
+						move(MoveDirection.Right);
+						break;
+					default:
+						break;
+					}
+				}
+				return false;
+			}
+		});
+	}
+
+	public void move(MoveDirection moveDirection) {
+		puzzleContext.move(moveDirection);
+		switch (moveDirection) {
+		case Up:
+			
+			break;
+		case Down:
+			
+			break;
+		case Left:
+			
+			break;
+		case Right:
+			
+			break;
+		default:
+			break;
+		}
+		repaint();
 	}
 
 	@Override
@@ -52,7 +88,8 @@ public class PanelGame extends JPanel {
 		Graphics2D g = (Graphics2D) graph;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// Background2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] { 5 ,5}, 0
+		// Background2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new
+		// float[] { 5 ,5}, 0
 		g.setColor(new Color(150, 150, 150));
 		g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -66,8 +103,10 @@ public class PanelGame extends JPanel {
 		// Cases
 		for (int j = 0; j < n; j++) {
 			for (int i = 0; i < n; i++) {
-				if (i + n * j == puzzleContext.getGrid().getNullIndex()) {
-					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] { 5 ,5}, 0));
+				//if (i + n * j == puzzleContext.getGrid().getNullIndex()) {
+				if (puzzleContext.getGrid().getTile(i, j).getValue() == 0) {
+					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1,
+							new float[] { 5, 5 }, 0));
 					g.setColor(new Color(100, 100, 100));
 					g.drawRoundRect(2 * MARGIN_CASE + i * sizeCase, 2 * MARGIN_CASE + j * sizeCase,
 							sizeCase - MARGIN_CASE, sizeCase - MARGIN_CASE, 16, 16);
