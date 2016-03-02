@@ -32,6 +32,10 @@ public class PuzzleGrid<T> {
 		return this.getTile(i,j).getValue();
 	}
 	
+	public int getNullIndex(){
+		return this.nullIndex;
+	}
+	
 	public void setMove(Move move) {
 		switch(move.get()) {
 		case Down:
