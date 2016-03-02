@@ -88,8 +88,6 @@ public class PanelGame extends JPanel implements MoveListener {
 		Graphics2D g = (Graphics2D) graph;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// Background2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new
-		// float[] { 5 ,5}, 0
 		g.setColor(new Color(150, 150, 150));
 		g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -103,8 +101,7 @@ public class PanelGame extends JPanel implements MoveListener {
 		// Cases
 		for (int j = 0; j < n; j++) {
 			for (int i = 0; i < n; i++) {
-				//if (i + n * j == puzzleContext.getGrid().getNullIndex()) {
-				if (puzzleContext.getGrid().getTile(i, j).getValue() == 0) {
+				if (i + n * j == puzzleContext.getGrid().getNullIndex()) {
 					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1,
 							new float[] { 5, 5 }, 0));
 					g.setColor(new Color(100, 100, 100));
