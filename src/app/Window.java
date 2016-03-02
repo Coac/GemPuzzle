@@ -8,10 +8,17 @@ import javax.swing.JFrame;
 public class Window extends JFrame {
 	public Window() {
 		super("GemPuzzle");
-		
+
+		// New, load, save
+
 		setLayout(new BorderLayout());
-		add(new PanelGame(), BorderLayout.CENTER);
-		
+
+		PanelGame panelGame = new PanelGame();
+		add(panelGame, BorderLayout.CENTER);
+
+		PanelControl panelControl = new PanelControl();
+		add(panelControl, BorderLayout.WEST);
+
 		setSize(800, 600);
 		setLocationRelativeTo(this);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
