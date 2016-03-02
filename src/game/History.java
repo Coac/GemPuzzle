@@ -30,4 +30,11 @@ public class History {
 		return this.moves.size();
 	}
 
+	public Move[] toArray() {
+		Move[] m = new Move[moves.size()];
+		for (int i = 0; i < m.length; i++) {
+			m[i] = moves.get(i);
+		}
+		return m;
+	}
 }

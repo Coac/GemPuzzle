@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import ai.AbstractArtificialIntelligence;
 import game.History;
@@ -17,8 +19,8 @@ public class PanelControl extends JPanel implements ActionListener {
 	private JButton bouttonNew;
 	private JButton bouttonOpen;
 	private JButton bouttonSave;
-	
-	private PanelControl panelControl;
+
+	private JList listHistory;
 
 	public PanelControl() {
 		JPanel panel1 = new JPanel();
@@ -59,7 +61,16 @@ public class PanelControl extends JPanel implements ActionListener {
 						return "AI 2";
 					}
 				} });
-		// add(listAI);
+		add(listAI);
+
+		listHistory = new JList(
+				new String[] { "a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b" });
+		JScrollPane pane = new JScrollPane(listHistory);
+		add(pane);
+	}
+
+	public void updateHistory() {
+		// TODO: toArray();
 	}
 
 	@Override
