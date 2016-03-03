@@ -25,9 +25,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	
 	
 	public List<PuzzleGrid<T>> aStarSolveMine(PuzzleGrid<T> puzzle) {
-	  	HashMap<PuzzleGrid<T>,PuzzleGrid<T>> history = new HashMap<PuzzleGrid<T>,PuzzleGrid<T>>();
-	  	HashMap<PuzzleGrid<T>, Integer> cost = new HashMap<PuzzleGrid<T>, Integer>();
-
+		GridState<T> previous = new GridState<>(puzzle, 0, null);
 	  	Queue<PuzzleGrid<T>> puzzleQueue = new LinkedList<PuzzleGrid<T>>();
 	  	Queue<Integer> puzzleQueueCost = new LinkedList<Integer>();
 	  	
@@ -47,23 +45,19 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  			
 	  			int adjPuzzleCost =  popedPuzzleCost +1;
 	  			
-	  			if(history.containsKey(adjPuzzle)) {
+	  			if(previous.has(adjPuzzle)) {
 	  				
-	  				if(adjPuzzleCost < cost.get(adjPuzzle)) {
-	  					cost.remove(adjPuzzle);
-	  					history.remove(adjPuzzle);
-	  					
-	  					history.put(adjPuzzle, popedPuzzle);
-			  			cost.put(adjPuzzle, adjPuzzleCost);
+	  				if(adjPuzzleCost < previous.getCost()) {
+  						previous.refreshCost(adjPuzzleCost);
 			  			
 			  			puzzleQueue.add(adjPuzzle);
 			  			puzzleQueueCost.add(popedPuzzleCost);
 	  				}
 	  				
 	  			} else {
-	  				history.put(adjPuzzle, popedPuzzle);
-		  			cost.put(adjPuzzle, adjPuzzleCost);
-		  			
+
+	  				previous = new GridState<T>(popedPuzzle, adjPuzzleCost, previous);
+	  			
 		  			puzzleQueue.add(adjPuzzle);
 		  			puzzleQueueCost.add(popedPuzzleCost);
 	  			}
@@ -73,10 +67,9 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  			if(adjPuzzle.isSolved()) {
 	  				System.out.println("WINNNEEEER");
 	  				
-	  				PuzzleGrid<T> searchPuzzlePredecessor = adjPuzzle;
-	  				while(history.containsKey(searchPuzzlePredecessor)) {
-	  					searchPuzzlePredecessor = history.get(searchPuzzlePredecessor);
-	  					System.out.println(searchPuzzlePredecessor);
+	  				while (previous.previous() != null) {
+	  					System.out.println(previous.previous().getGrid());
+	  					previous = previous.previous();
 	  				}
 	  				return null;
 	  			}
