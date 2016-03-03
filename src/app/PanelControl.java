@@ -17,10 +17,12 @@ public class PanelControl extends JPanel implements ActionListener {
 	private JButton bouttonNew;
 	private JButton bouttonOpen;
 	private JButton bouttonSave;
-	
-	private PanelControl panelControl;
 
-	public PanelControl() {
+	private WindowGemPuzzle windowGemPuzzle;
+
+	public PanelControl(WindowGemPuzzle windowGemPuzzle) {
+		this.windowGemPuzzle = windowGemPuzzle;
+
 		JPanel panel1 = new JPanel();
 		bouttonNew = new JButton("Nouveau");
 		bouttonNew.addActionListener(this);
@@ -59,12 +61,11 @@ public class PanelControl extends JPanel implements ActionListener {
 						return "AI 2";
 					}
 				} });
-		// add(listAI);
+		add(listAI);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 	}
-
 }

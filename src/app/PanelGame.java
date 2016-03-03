@@ -12,6 +12,8 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -28,9 +30,12 @@ public class PanelGame extends JPanel implements MoveListener {
 	private PuzzleContext<Integer> puzzleContext;
 
 	private double animationProgress = 1;
-	private double animationTile = 0;
 
-	public PanelGame() {
+	private WindowGemPuzzle windowGemPuzzle;
+	
+	public PanelGame(WindowGemPuzzle windowGemPuzzle) {
+		this.windowGemPuzzle = windowGemPuzzle;
+		
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
 			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
@@ -66,8 +71,11 @@ public class PanelGame extends JPanel implements MoveListener {
 	}
 
 	public void move(MoveDirection moveDirection) {
-		animationTile = puzzleContext.getGrid().getNullIndex();
 		if (puzzleContext.move(moveDirection)) {
+			// TODO: show final state
+			
+			windowGemPuzzle.getPanelHistory().updateHistory();
+			
 			// Animation
 			new Thread(new Runnable() {
 				public void run() {
@@ -111,17 +119,19 @@ public class PanelGame extends JPanel implements MoveListener {
 					double x = i * sizeCase;
 					double y = j * sizeCase;
 					if (puzzleContext.getHistory().last() != null) {
-						if (i + n * j == animationTile) {
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Left)) {
-								x = (i - (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)) {
-								x = (i + (1 - animationProgress)) * sizeCase;
-							}
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Up)) {
-								y = (j - (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)) {
-								y = (j + (1 - animationProgress)) * sizeCase;
-							}
+						if (puzzleContext.getHistory().last().equals(MoveDirection.Left)
+								&& (i - 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
+							x = (i - (1 - animationProgress)) * sizeCase;
+						} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)
+								&& (i + 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
+							x = (i + (1 - animationProgress)) * sizeCase;
+						}
+						if (puzzleContext.getHistory().last().equals(MoveDirection.Up)
+								&& i + n * (j - 1) == puzzleContext.getGrid().getNullIndex()) {
+							y = (j - (1 - animationProgress)) * sizeCase;
+						} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)
+								&& i + n * (j + 1) == puzzleContext.getGrid().getNullIndex()) {
+							y = (j + (1 - animationProgress)) * sizeCase;
 						}
 					}
 
@@ -177,5 +187,9 @@ public class PanelGame extends JPanel implements MoveListener {
 
 	public boolean isEditable() {
 		return editable;
+	}
+	
+	public PuzzleContext<Integer> getPuzzleContext(){
+		return puzzleContext;
 	}
 }
