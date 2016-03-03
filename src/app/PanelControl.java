@@ -14,9 +14,12 @@ import game.Move;
 @SuppressWarnings("serial")
 public class PanelControl extends JPanel implements ActionListener {
 
-	private JButton bouttonNew;
-	private JButton bouttonOpen;
-	private JButton bouttonSave;
+	private JButton buttonNew;
+	private JButton buttonOpen;
+	private JButton buttonSave;
+
+	private JButton buttonSolve;
+	private JButton buttonNext;
 
 	private WindowGemPuzzle windowGemPuzzle;
 
@@ -24,15 +27,15 @@ public class PanelControl extends JPanel implements ActionListener {
 		this.windowGemPuzzle = windowGemPuzzle;
 
 		JPanel panel1 = new JPanel();
-		bouttonNew = new JButton("Nouveau");
-		bouttonNew.addActionListener(this);
-		panel1.add(bouttonNew);
-		bouttonOpen = new JButton("Ouvrir");
-		bouttonOpen.addActionListener(this);
-		panel1.add(bouttonOpen);
-		bouttonSave = new JButton("Enregistrer");
-		bouttonSave.addActionListener(this);
-		panel1.add(bouttonSave);
+		buttonNew = new JButton("Nouveau");
+		buttonNew.addActionListener(this);
+		panel1.add(buttonNew);
+		buttonOpen = new JButton("Ouvrir");
+		buttonOpen.addActionListener(this);
+		panel1.add(buttonOpen);
+		buttonSave = new JButton("Enregistrer");
+		buttonSave.addActionListener(this);
+		panel1.add(buttonSave);
 		add(panel1);
 
 		JComboBox<AbstractArtificialIntelligence> listAI = new JComboBox<>(
@@ -62,6 +65,13 @@ public class PanelControl extends JPanel implements ActionListener {
 					}
 				} });
 		add(listAI);
+
+		buttonNext = new JButton("Aide");
+		buttonNext.addActionListener(this);
+		add(buttonNext);
+		buttonSolve = new JButton("Résoudre");
+		buttonSolve.addActionListener(this);
+		add(buttonSolve);
 	}
 
 	@Override
