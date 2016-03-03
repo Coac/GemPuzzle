@@ -87,14 +87,19 @@ public class PuzzleGrid<T> {
 		return indexes;
 	}
 
-	private void swapIndex(int index1, int index2) {
+	public void swapIndex(int index1, int index2) {
 		Tile<T> temp = this.tiles.get(index1);
 		this.tiles.set(index1, this.tiles.get(index2));
 		this.tiles.set(index2, temp);
-		nullIndex = index2;
+		
+		if(index1 == nullIndex){
+			nullIndex = index2;
+		}else if(index2 == nullIndex){
+			nullIndex = index1;
+		}
 	}
 
-	private void swapCoord(int i1, int j1, int i2, int j2) {
+	public void swapCoord(int i1, int j1, int i2, int j2) {
 		Tile<T> temp = this.getTile(i1, j1);
 		this.setTile(i1, j1, this.getTile(i2, j2));
 		this.setTile(i2, j2, temp);
