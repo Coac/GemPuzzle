@@ -11,7 +11,7 @@ import game.Move;
 public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
 
 	@Override
-	public History solve() {
+	public void silentSolve() {
 		HashMap<PuzzleGrid<T>, PuzzleGrid<T>> history = new HashMap<PuzzleGrid<T>, PuzzleGrid<T>>();
 		LinkedList<PuzzleGrid<T>> puzzleQueue = new LinkedList<PuzzleGrid<T>>();
 		// counter (other counters should be implemented : add/remove of each
@@ -28,7 +28,7 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 					searchPuzzlePredecessor = history.get(searchPuzzlePredecessor);
 					System.out.println(searchPuzzlePredecessor);
 				}
-				return null;
+				return;
 			}
 
 			List<PuzzleGrid<T>> adjacentsPuzzle = poppedPuzzle.getAdjacentPuzzles();
@@ -40,13 +40,6 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 			}
 			iterationsNumber++;
 		}
-		return null;
-	}
-
-	@Override
-	public Move getNextMove() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
