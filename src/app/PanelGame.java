@@ -30,8 +30,12 @@ public class PanelGame extends JPanel implements MoveListener {
 	private PuzzleContext<Integer> puzzleContext;
 
 	private double animationProgress = 1;
+
+	private WindowGemPuzzle windowGemPuzzle;
 	
-	public PanelGame() {
+	public PanelGame(WindowGemPuzzle windowGemPuzzle) {
+		this.windowGemPuzzle = windowGemPuzzle;
+		
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
 			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
@@ -68,6 +72,10 @@ public class PanelGame extends JPanel implements MoveListener {
 
 	public void move(MoveDirection moveDirection) {
 		if (puzzleContext.move(moveDirection)) {
+			// TODO: show final state
+			
+			windowGemPuzzle.getPanelHistory().updateHistory();
+			
 			// Animation
 			new Thread(new Runnable() {
 				public void run() {
@@ -179,5 +187,9 @@ public class PanelGame extends JPanel implements MoveListener {
 
 	public boolean isEditable() {
 		return editable;
+	}
+	
+	public PuzzleContext<Integer> getPuzzleContext(){
+		return puzzleContext;
 	}
 }
