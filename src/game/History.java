@@ -14,6 +14,10 @@ public class History {
 	public void add(Move move) {
 		this.moves.add(move);
 	}
+	
+	public void addHead(Move move) {
+		this.moves.add(0, move);
+	}
 
 	public Move get(int i) {
 		return this.moves.get(i);
@@ -28,6 +32,11 @@ public class History {
 
 	public int size() {
 		return this.moves.size();
+	}
+	
+	@Override
+	public String toString() {
+		return this.moves.toString();
 	}
 
 	public Move[] toArray() {
