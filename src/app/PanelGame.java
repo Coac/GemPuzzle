@@ -1,6 +1,5 @@
 package app;
 
-import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,21 +8,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 import javax.swing.JPanel;
 
 import game.Move.MoveDirection;
 import game.PuzzleContext;
-import parser.PuzzleGridsIntegerParser;
 
 @SuppressWarnings("serial")
 public class PanelGame extends JPanel implements MoveListener {
@@ -44,14 +40,7 @@ public class PanelGame extends JPanel implements MoveListener {
 		this.windowGemPuzzle = windowGemPuzzle;
 
 		rectangleCases = null;
-
-		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
-		try {
-			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
+		puzzleContext = null;
 
 		// Keypressed listener
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -78,8 +67,20 @@ public class PanelGame extends JPanel implements MoveListener {
 			}
 		});
 
-		addMouseListener(new MouseListener() {
+		// Mouse listener
+		addMouseListener(new MouseAdapter() {
 			public void mouseReleased(MouseEvent e) {
+				if (rectangleCases != null && selectedTile >= 0) {
+					int newTile = -1;
+					for (int i = 0; i < rectangleCases.length; i++) {
+						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
+							newTile = i;
+						}
+					}
+					if (newTile >= 0) {
+						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
+					}
+				}
 				selectedTile = -1;
 				repaint();
 			}
@@ -94,20 +95,12 @@ public class PanelGame extends JPanel implements MoveListener {
 					}
 				}
 			}
-
-			public void mouseExited(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			public void mouseClicked(MouseEvent e) {
-			}
 		});
-		
+
 		addMouseMotionListener(new MouseMotionListener() {
 			public void mouseMoved(MouseEvent e) {
 			}
+
 			public void mouseDragged(MouseEvent e) {
 				repaint();
 			}
@@ -188,62 +181,65 @@ public class PanelGame extends JPanel implements MoveListener {
 			// Tiles
 			for (int j = 0; j < n; j++) {
 				for (int i = 0; i < n; i++) {
-					if (i + n * j != puzzleContext.getGrid().getNullIndex()) {
+					double x = i * sizeCase;
+					double y = j * sizeCase;
+					if (i + n * j != selectedTile) {
 						// Animation
-						double x = i * sizeCase;
-						double y = j * sizeCase;
 						if (puzzleContext.getHistory().last() != null) {
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Left)
-									&& (i - 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
-								x = (i - (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)
-									&& (i + 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
-								x = (i + (1 - animationProgress)) * sizeCase;
-							}
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Up)
-									&& i + n * (j - 1) == puzzleContext.getGrid().getNullIndex()) {
-								y = (j - (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)
-									&& i + n * (j + 1) == puzzleContext.getGrid().getNullIndex()) {
-								y = (j + (1 - animationProgress)) * sizeCase;
+							if (i + n * j != puzzleContext.getGrid().getNullIndex()) {
+								if (puzzleContext.getHistory().last().equals(MoveDirection.Left)
+										&& (i - 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
+									x = (i - (1 - animationProgress)) * sizeCase;
+								} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)
+										&& (i + 1) + n * j == puzzleContext.getGrid().getNullIndex()) {
+									x = (i + (1 - animationProgress)) * sizeCase;
+								}
+								if (puzzleContext.getHistory().last().equals(MoveDirection.Up)
+										&& i + n * (j - 1) == puzzleContext.getGrid().getNullIndex()) {
+									y = (j - (1 - animationProgress)) * sizeCase;
+								} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)
+										&& i + n * (j + 1) == puzzleContext.getGrid().getNullIndex()) {
+									y = (j + (1 - animationProgress)) * sizeCase;
+								}
+							} else {
+								if (puzzleContext.getHistory().last().equals(MoveDirection.Left)) {
+									x = (i + (1 - animationProgress)) * sizeCase;
+								} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)) {
+									x = (i - (1 - animationProgress)) * sizeCase;
+								}
+
+								if (puzzleContext.getHistory().last().equals(MoveDirection.Up)) {
+									y = (j + (1 - animationProgress)) * sizeCase;
+								} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)) {
+									y = (j - (1 - animationProgress)) * sizeCase;
+								}
 							}
 						}
 						y += (getHeight() - n * sizeCase - 2 * PanelGame.MARGIN_CASE) / 2;
-
-						if (i + n * j == selectedTile) {
-							x = getMousePosition().getX() - sizeCase/2;
-							y = getMousePosition().getY()- sizeCase/2;
-						}
 
 						// Tile
-						String str = puzzleContext.getGrid().getElement(i, j).toString();
-						drawTile(g, str, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
-
-						rectangleCases[i + n * j] = new Rectangle((int) x, (int) y, sizeCase, sizeCase);
-					} else {
-						// Animation
-						double x = i * sizeCase;
-						double y = j * sizeCase;
-						if (puzzleContext.getHistory().last() != null) {
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Left)) {
-								x = (i + (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Right)) {
-								x = (i - (1 - animationProgress)) * sizeCase;
-							}
-
-							if (puzzleContext.getHistory().last().equals(MoveDirection.Up)) {
-								y = (j + (1 - animationProgress)) * sizeCase;
-							} else if (puzzleContext.getHistory().last().equals(MoveDirection.Down)) {
-								y = (j - (1 - animationProgress)) * sizeCase;
-							}
+						String str = null;
+						if (i + n * j != puzzleContext.getGrid().getNullIndex()) {
+							str = puzzleContext.getGrid().getElement(i, j).toString();
 						}
-						y += (getHeight() - n * sizeCase - 2 * PanelGame.MARGIN_CASE) / 2;
-
-						// Null element
-						drawTile(g, null, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
-
-						rectangleCases[i + n * j] = new Rectangle((int) x, (int) y, sizeCase, sizeCase);
+						drawTile(g, str, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
 					}
+
+					rectangleCases[i + n * j] = new Rectangle((int) x, (int) y, sizeCase, sizeCase);
+				}
+			}
+
+			if (selectedTile >= 0) {
+				Point mouse = getMousePosition();
+				if (mouse != null) {
+					int x = (int) (mouse.getX() - sizeCase / 2);
+					int y = (int) (mouse.getY() - sizeCase / 2);
+
+					String str = null;
+					if (selectedTile != puzzleContext.getGrid().getNullIndex()) {
+						str = puzzleContext.getGrid().getTile(selectedTile).getValue().toString();
+					}
+					drawTile(g, str, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
 				}
 			}
 		} else {
@@ -261,5 +257,11 @@ public class PanelGame extends JPanel implements MoveListener {
 
 	public PuzzleContext<Integer> getPuzzleContext() {
 		return puzzleContext;
+	}
+
+	public void setPuzzleContext(PuzzleContext puzzleContext) {
+		this.puzzleContext = puzzleContext;
+		repaint();
+		windowGemPuzzle.getPanelPreview().updatePreview();
 	}
 }

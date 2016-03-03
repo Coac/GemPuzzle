@@ -1,7 +1,5 @@
 package app;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -20,13 +18,28 @@ public class PanelPreview extends JPanel {
 		this.windowGemPuzzle = windowGemPuzzle;
 	}
 
+	public void updatePreview() {
+		PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+		if (puzzleContext == null) {
+			Dimension dimension = new Dimension(0, 0);
+			setPreferredSize(dimension);
+			setSize(dimension);
+		} else {
+			Dimension dimension = new Dimension(
+					2 * PanelGame.MARGIN_CASE + puzzleContext.getGrid().size() * PanelGame.MIN_SIZE_CASE, 0);
+			setPreferredSize(dimension);
+			setSize(dimension);
+		}
+		windowGemPuzzle.validate();
+		repaint();
+		windowGemPuzzle.validate();
+	}
+
 	@Override
 	public void paint(Graphics graph) {
 		PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
 
-		if (puzzleContext == null) {
-			setPreferredSize(new Dimension(0, 0));
-		} else {
+		if (puzzleContext != null) {
 			int n = puzzleContext.getGrid().size();
 
 			Graphics2D g = (Graphics2D) graph;
@@ -51,16 +64,14 @@ public class PanelPreview extends JPanel {
 			// Tiles
 			for (int j = 0; j < n; j++) {
 				for (int i = 0; i < n; i++) {
-						int x = i * PanelGame.MIN_SIZE_CASE;
-						int y = j * PanelGame.MIN_SIZE_CASE
-								+ (getHeight() - n * PanelGame.MIN_SIZE_CASE - 2 * PanelGame.MARGIN_CASE) / 2;
+					int x = i * PanelGame.MIN_SIZE_CASE;
+					int y = j * PanelGame.MIN_SIZE_CASE
+							+ (getHeight() - n * PanelGame.MIN_SIZE_CASE - 2 * PanelGame.MARGIN_CASE) / 2;
 
-						windowGemPuzzle.getPanelGame().drawTile(g, sortedPuzzle[i][j], PanelGame.MARGIN_CASE + x,
-								PanelGame.MARGIN_CASE + y, PanelGame.MIN_SIZE_CASE);
+					windowGemPuzzle.getPanelGame().drawTile(g, sortedPuzzle[i][j], PanelGame.MARGIN_CASE + x,
+							PanelGame.MARGIN_CASE + y, PanelGame.MIN_SIZE_CASE);
 				}
 			}
-
-			setPreferredSize(new Dimension(2 * PanelGame.MARGIN_CASE + n * PanelGame.MIN_SIZE_CASE, 0));
 		}
 	}
 }
