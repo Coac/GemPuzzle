@@ -30,9 +30,12 @@ public class test2 {
 				
 		
 		ASTARArtificialIntelligence<Integer> ai = new ASTARArtificialIntelligence<Integer>();
-		ai.setGrid(puzzleContext.getGrid());
-		System.out.println(ai.solve().toString());
 		
+		ai.setGrid(puzzleContext.getGrid());
+		
+		long time = System.nanoTime();
+		System.out.println(ai.solve().toString());
+		System.out.println((System.nanoTime() - time) / 1000000 + " ms");
 	}
 
 }

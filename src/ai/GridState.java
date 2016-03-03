@@ -3,7 +3,7 @@ package ai;
 import element.PuzzleGrid;
 import game.Move;
 
-public class GridState<T> {
+public class GridState<T> implements Comparable<GridState<T>> {
 	PuzzleGrid<T> grid;
 	int cost;
 	Move move;
@@ -41,5 +41,16 @@ public class GridState<T> {
 		}
 		
 		return ((GridState) obj).getGrid().equals(this.grid);
+	}
+
+	@Override
+	public int compareTo(GridState<T> grid) {
+		if(this.cost > grid.getCost()) {
+			return 1;
+		} else if (this.cost < grid.getCost()) {
+			return -1;
+		}
+		
+		return 0;
 	}
 }

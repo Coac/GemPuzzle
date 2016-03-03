@@ -1,8 +1,8 @@
 package ai;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import element.PuzzleGrid;
@@ -13,7 +13,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	
 	public void silentSolve() {
 		HashMap<GridState<T>, GridState<T>> parent = new HashMap<GridState<T>, GridState<T>>();
-	  	Queue<GridState<T>> gridStateQueue = new LinkedList<GridState<T>>();
+	  	Queue<GridState<T>> gridStateQueue = new PriorityQueue<GridState<T>>();
 		
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);
