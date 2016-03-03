@@ -34,7 +34,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  		
 	  		List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
-  			int adjacentCost = polledGridState.getCost() + 1;
+  			int adjacentCost = polledGridState.getCost() + 1 + polledGridState.getGrid().getNbMisplacedTiles();
   			
 	  		for(Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
 	  			
