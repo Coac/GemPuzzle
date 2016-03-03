@@ -16,9 +16,14 @@ public class PuzzleGridsIntegerParser implements AbstractPuzzleGridsParser<Integ
 		int size = scanner.nextInt();
 
 		List<Tile<Integer>> mixedTiles = new ArrayList<Tile<Integer>>();
-
+		
+		int nullIndex = 0;
 		for (int i = 0; i < size * size; ++i) {
-			mixedTiles.add(new Tile<Integer>(scanner.nextInt(), i));
+			int readedInteger = scanner.nextInt();
+			if(readedInteger == 0)  {
+				nullIndex = i;
+			}
+			mixedTiles.add(new Tile<Integer>(readedInteger, i));
 		}
 
 		for (int i = 0; i < size * size; ++i) {
@@ -33,6 +38,6 @@ public class PuzzleGridsIntegerParser implements AbstractPuzzleGridsParser<Integ
 
 		scanner.close();
 
-		return new PuzzleGrid<Integer>(size, mixedTiles);
+		return new PuzzleGrid<Integer>(size, mixedTiles, nullIndex);
 	}
 }
