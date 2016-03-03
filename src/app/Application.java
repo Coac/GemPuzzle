@@ -10,7 +10,7 @@ public class Application {
 		// | UnsupportedLookAndFeelException e) {
 		// e.printStackTrace();
 		// }
-		new Window();
+		new WindowGemPuzzle();
 	}
 
 }

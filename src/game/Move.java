@@ -1,21 +1,23 @@
 package game;
 
 public class Move {
-	public enum MoveDirection { Down, Left, Right, Up };
-	
+	public enum MoveDirection {
+		Down, Left, Right, Up
+	};
+
 	private MoveDirection move;
-	
+
 	public Move(MoveDirection move) {
 		this.move = move;
 	}
-	
+
 	public MoveDirection get() {
 		return this.move;
 	}
-	
+
 	@Override
 	public String toString() {
-		switch(move) {
+		switch (move) {
 		case Down:
 			return "↓";
 		case Left:
@@ -27,5 +29,13 @@ public class Move {
 		default:
 			return "";
 		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof MoveDirection) {
+			return this.move.equals(obj);
+		}
+		return super.equals(obj);
 	}
 }
