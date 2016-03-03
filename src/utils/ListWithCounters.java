@@ -6,7 +6,7 @@ public class ListWithCounters<E> extends LinkedList<E>{
 	
 	public ListWithCounters(){
 		super();
-		this.statistics = new DataStructStats();
+		this.statistics = new DataStructStats("List");
 	}
 	
 	@Override

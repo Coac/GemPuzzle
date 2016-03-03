@@ -4,44 +4,46 @@ public class DataStructStats {
 	private int addCount;
 	private int removeCount;
 	private int maximumSize;
-	
-	public DataStructStats(){
-		this(0,0,0);
+	private String name;
+
+	public DataStructStats(String structName) {
+		this(structName, 0, 0, 0);
 	}
-	
-	public DataStructStats(int addCount, int removeCount, int maxSize){
-		this.addCount=addCount;
-		this.removeCount=removeCount;
-		this.maximumSize=maxSize;
+
+	public DataStructStats(String structName, int addCount, int removeCount, int maxSize) {
+		this.addCount = addCount;
+		this.removeCount = removeCount;
+		this.maximumSize = maxSize;
+		this.name = structName;
 	}
-	
-	public void addInc(){
+
+	public void addInc() {
 		this.addCount++;
-		this.maximumSize=Math.max(this.maximumSize, this.addCount);
+		this.maximumSize = Math.max(this.maximumSize, this.addCount);
 	}
-	
-	public int getAddCount(){
+
+	public int getAddCount() {
 		return this.addCount;
 	}
-	
-	public void removeInc(){
+
+	public void removeInc() {
 		this.removeCount++;
 	}
-	
-	public int getRemoveCount(){
+
+	public int getRemoveCount() {
 		return this.removeCount;
 	}
-	
-	public int getMaximumSize(){
+
+	public int getMaximumSize() {
 		return this.maximumSize;
 	}
-	
+
 	@Override
 	public String toString() {
-		String repr = "";
-		repr += "Add count: "+this.addCount+"\n";
-		repr += "Remove count: "+this.removeCount+"\n";
-		repr += "Max struct size: "+this.maximumSize+"\n";
+		String repr = "Statistics of "+this.name+"\n";
+		repr += "Add count: " + this.addCount + "\n";
+		repr += "Remove count: " + this.removeCount + "\n";
+		repr += "Max struct size: " + this.maximumSize + "\n";
 		return repr;
 	}
 }

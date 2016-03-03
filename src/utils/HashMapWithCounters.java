@@ -7,7 +7,7 @@ public class HashMapWithCounters<K, V> extends HashMap<K, V>{
 	
 	public HashMapWithCounters(){
 		super();
-		this.statistics = new DataStructStats();
+		this.statistics = new DataStructStats("HashMap");
 	}
 	
 	@Override

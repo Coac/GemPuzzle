@@ -7,7 +7,7 @@ private DataStructStats statistics;
 	
 	public PriorityQueueWithCounters(){
 		super();
-		this.statistics = new DataStructStats();
+		this.statistics = new DataStructStats("Priority Queue");
 	}
 	
 	@Override

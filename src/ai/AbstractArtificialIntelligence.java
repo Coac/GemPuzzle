@@ -1,16 +1,21 @@
 package ai;
 
+import java.util.ArrayList;
+
 import element.PuzzleGrid;
 import game.History;
 import game.Move;
+import utils.DataStructStats;
 
 public abstract class AbstractArtificialIntelligence<T> {
 	protected PuzzleGrid<T> grid;
 	protected History history;
 	protected int currentMove;
+	protected ArrayList<DataStructStats> stats;
 	
 	public AbstractArtificialIntelligence() {
 		this.reset();
+		this.stats = new ArrayList<DataStructStats>();
 	}
 	
 	public void setGrid(PuzzleGrid<T> grid) {
@@ -41,4 +46,8 @@ public abstract class AbstractArtificialIntelligence<T> {
 	protected abstract void silentSolve();
 	
 	public abstract String toString();
+	
+	public ArrayList<DataStructStats> getStatistics(){
+		return this.stats;
+	}
 }
