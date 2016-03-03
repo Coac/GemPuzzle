@@ -6,29 +6,14 @@ import java.util.List;
 import java.util.Queue;
 
 import element.PuzzleGrid;
-import game.History;
-import game.Move;
 
 public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
-
-	@Override
-	public History solve() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Move getNextMove() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	
-	public List<PuzzleGrid<T>> aStarSolveMine(PuzzleGrid<T> puzzle) {
+	public void silentSolve() {
 		HashMap<GridState<T>, GridState<T>> parent = new HashMap<GridState<T>, GridState<T>>();
 	  	Queue<GridState<T>> gridStateQueue = new LinkedList<GridState<T>>();
 		
-		GridState<T> currentState = new GridState<T>(puzzle, 0);
+		GridState<T> currentState = new GridState<T>(this.grid, 0);
 		gridStateQueue.add(currentState);
 	  	
 	  	while(!gridStateQueue.isEmpty()) {
@@ -43,10 +28,10 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
   					System.out.println(previous.getGrid());
   					previous = parent.get(previous);
   				}
-  				return null;
+  				return;
   			}
 	  		
-	  		
+	  	// ADD MOVE ??
 	  		List<PuzzleGrid<T>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
   			int adjacentCost = polledGridState.getCost() + 1;
@@ -56,7 +41,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  			
 	  			if(parent.containsKey(adjacentState)) {
 	  				GridState<T> existingState = parent.get(adjacentState);
-	  		
+	  					
 	  				if(adjacentCost < existingState.getCost()) {
 	  					existingState.refreshCost(adjacentCost);
 			  			
@@ -66,14 +51,9 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  				parent.put(adjacentState, polledGridState);
   					gridStateQueue.add(adjacentState);
 	  			}
-	  				  			
-	  			
 	  		}
 	  	}
 		
-		
-		
-		return null;
 	}
 
 }
