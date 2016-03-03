@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 
 import element.PuzzleGrid;
+import game.Move;
+import utils.Pair;
 
 public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
 	
@@ -13,7 +15,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 		HashMap<GridState<T>, GridState<T>> parent = new HashMap<GridState<T>, GridState<T>>();
 	  	Queue<GridState<T>> gridStateQueue = new LinkedList<GridState<T>>();
 		
-		GridState<T> currentState = new GridState<T>(this.grid, 0);
+		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);
 	  	
 	  	while(!gridStateQueue.isEmpty()) {
@@ -25,26 +27,27 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
   				
   				GridState<T> previous = polledGridState;
   				while (parent.containsKey(previous)) {
-  					System.out.println(previous.getGrid());
+  					this.history.addHead(previous.getMove());
   					previous = parent.get(previous);
   				}
   				return;
   			}
 	  		
-	  	// ADD MOVE ??
-	  		List<PuzzleGrid<T>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
+	  		List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
   			int adjacentCost = polledGridState.getCost() + 1;
   			
-	  		for(PuzzleGrid<T> adjPuzzle : adjacentsPuzzle) {
-	  			GridState<T> adjacentState = new GridState<T>(adjPuzzle, adjacentCost);
+	  		for(Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
+	  			
+	  			GridState<T> adjacentState = new GridState<T>(adjPuzzle.getFirst(), adjacentCost, adjPuzzle.getSecond());
 	  			
 	  			if(parent.containsKey(adjacentState)) {
 	  				GridState<T> existingState = parent.get(adjacentState);
 	  					
 	  				if(adjacentCost < existingState.getCost()) {
 	  					existingState.refreshCost(adjacentCost);
-			  			
+	  					existingState.refreshMove(adjPuzzle.getSecond());
+
 	  					gridStateQueue.add(adjacentState);
 	  				}
 	  			} else {
