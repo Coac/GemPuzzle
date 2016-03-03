@@ -139,7 +139,7 @@ public class PuzzleGrid<T> {
 		/*
 		voidParity = (size-1)*2 - i;
 		*/
-		voidParity = (this.nullIndex / this.size) + (this.nullIndex % this.size) - i;
+		voidParity = (this.nullIndex / this.size) + (this.nullIndex % this.size) - i/this.size - i%size;
 		//need positive integer
 		if(voidParity < 0)
 			voidParity = -voidParity;
