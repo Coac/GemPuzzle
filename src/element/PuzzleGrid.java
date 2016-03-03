@@ -75,6 +75,10 @@ public class PuzzleGrid<T> {
 		return true;
 	}
 
+	public int getTileIndex(Tile t){
+		return this.tiles.indexOf(t);
+	}
+	
 	public int[] getTilesIndexes() {
 		int[] indexes = new int[this.getNbTiles()];
 		for (int i = 0; i < this.getNbTiles(); i++) {
