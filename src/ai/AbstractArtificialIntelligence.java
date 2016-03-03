@@ -39,4 +39,6 @@ public abstract class AbstractArtificialIntelligence<T> {
 		this.currentMove = 0;
 	}
 	protected abstract void silentSolve();
+	
+	public abstract String toString();
 }

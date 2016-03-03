@@ -5,6 +5,7 @@ import java.util.List;
 
 import game.Move;
 import game.Move.MoveDirection;
+import utils.Pair;
 
 public class PuzzleGrid<T> {
 
@@ -176,24 +177,24 @@ public class PuzzleGrid<T> {
 		return str;
 	}
 
-	public List<PuzzleGrid<T>> getAdjacentPuzzles() {
-		List<PuzzleGrid<T>> list = new ArrayList<PuzzleGrid<T>>();
+	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
+		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		
 		PuzzleGrid<T> puzzleUp = this.clone();
 		if(puzzleUp.setMove(new Move(MoveDirection.Up))) {
-			list.add(puzzleUp);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleUp, new Move(MoveDirection.Up)));
 		}
 		PuzzleGrid<T> puzzleLeft = this.clone();
 		if(puzzleLeft.setMove(new Move(MoveDirection.Left))) {
-			list.add(puzzleLeft);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleLeft, new Move(MoveDirection.Left)));
 		}
 		PuzzleGrid<T> puzzleDown = this.clone();
 		if(puzzleDown.setMove(new Move(MoveDirection.Down))) {
-			list.add(puzzleDown);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleDown, new Move(MoveDirection.Down)));
 		}
 		PuzzleGrid<T> puzzleRight = this.clone();
 		if(puzzleRight.setMove(new Move(MoveDirection.Right))) {
-			list.add(puzzleRight);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleRight, new Move(MoveDirection.Right)));
 		}
 
 		return list;

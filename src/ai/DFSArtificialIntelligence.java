@@ -42,4 +42,8 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "DFS Solver";
+	}
 }
