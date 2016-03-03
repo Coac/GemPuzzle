@@ -26,21 +26,24 @@ public class PanelGame extends JPanel implements MoveListener {
 	public static final int MARGIN_CASE = 5;
 	public static final int MIN_SIZE_CASE = 42;
 
-	private boolean editable = true;
-
-	private PuzzleContext<Integer> puzzleContext;
-
 	private double animationProgress = 1;
 
-	private WindowGemPuzzle windowGemPuzzle;
+	private boolean editable = true;
 
 	private Rectangle[] rectangleCases;
+	private int selectedTile;
+
+	private PuzzleContext<Integer> puzzleContext;
+	
+	private WindowGemPuzzle windowGemPuzzle;
 
 	public PanelGame(WindowGemPuzzle windowGemPuzzle) {
 		this.windowGemPuzzle = windowGemPuzzle;
 
-		rectangleCases = null;
 		puzzleContext = null;
+		
+		rectangleCases = null;
+		selectedTile = -1;
 
 		// Keypressed listener
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -106,8 +109,6 @@ public class PanelGame extends JPanel implements MoveListener {
 			}
 		});
 	}
-
-	private int selectedTile = -1;
 
 	public void move(MoveDirection moveDirection) {
 		if (puzzleContext != null) {
