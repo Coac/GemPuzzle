@@ -8,7 +8,7 @@ import element.PuzzleGrid;
 import game.History;
 import game.Move;
 
-public class BreadthFirstArtificialIntelligence<T> extends AbstractArtificialIntelligence<T>{
+public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence<T>{
 
 	@Override
 	public History solve() {
