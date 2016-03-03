@@ -11,9 +11,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	
 	public void silentSolve() {
 		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
-	  	PriorityQueueWithCounters<GridState<T>> gridStateQueue = new PriorityQueueWithCounters<GridState<T>>();
-	  	int iterationsNumber=0;
-	  	
+	  	PriorityQueueWithCounters<GridState<T>> gridStateQueue = new PriorityQueueWithCounters<GridState<T>>();	  	
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);
 	  	
@@ -29,6 +27,8 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
   					this.history.addHead(previous.getMove());
   					previous = parent.get(previous);
   				}
+  				this.stats.add(parent.getStatistics());
+  				this.stats.add(gridStateQueue.getStatistics());
   				return;
   			}
 	  		
@@ -55,7 +55,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  			}
 	  		}
 
-	  		iterationsNumber++;
+	  		this.iterationsNumber++;
 	  	}		
 	}
 

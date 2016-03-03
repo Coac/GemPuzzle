@@ -13,9 +13,8 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 	@Override
 	public void silentSolve() {
 		
-		HashMap<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
-	  	ListWithCounters<GridState<T>> gridStateQueue = new ListWithCounters<GridState<T>>();
-	  	int iterationsNumber=0;	  	
+		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
+	  	ListWithCounters<GridState<T>> gridStateQueue = new ListWithCounters<GridState<T>>();	  	
 	  	
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);	  	
@@ -31,6 +30,8 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
   					this.history.addHead(previous.getMove());
   					previous = parent.get(previous);
   				}
+  				this.stats.add(parent.getStatistics());
+  				this.stats.add(gridStateQueue.getStatistics());
   				return;
   			}	  	
 	  		
@@ -44,7 +45,7 @@ public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 	  			}
 	  		}
 	  		
-	  		iterationsNumber++;
+	  		this.iterationsNumber++;
 		}
 	}
 

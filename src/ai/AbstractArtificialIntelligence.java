@@ -12,6 +12,7 @@ public abstract class AbstractArtificialIntelligence<T> {
 	protected History history;
 	protected int currentMove;
 	protected ArrayList<DataStructStats> stats;
+	protected int iterationsNumber;
 	
 	public AbstractArtificialIntelligence() {
 		this.reset();
@@ -42,6 +43,9 @@ public abstract class AbstractArtificialIntelligence<T> {
 	private void reset() {
 		this.history = null;
 		this.currentMove = 0;
+		this.stats = new ArrayList<DataStructStats>();
+		this.iterationsNumber = 0;
+		
 	}
 	protected abstract void silentSolve();
 	
@@ -49,5 +53,9 @@ public abstract class AbstractArtificialIntelligence<T> {
 	
 	public ArrayList<DataStructStats> getStatistics(){
 		return this.stats;
+	}
+	
+	public int getIterationsNumber(){
+		return this.iterationsNumber;
 	}
 }
