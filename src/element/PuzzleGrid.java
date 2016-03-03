@@ -76,7 +76,7 @@ public class PuzzleGrid<T> {
 		return true;
 	}
 
-	public int getTileIndex(Tile t){
+	public int getTileIndex(Tile<T> t){
 		return this.tiles.indexOf(t);
 	}
 	
