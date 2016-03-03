@@ -23,15 +23,6 @@ public class PuzzleContext<T> {
 		return this.grid;
 	}
 
-	public boolean hasWin() {
-		for (int i = 0; i < grid.size(); i++) {
-			if (i != this.grid.getTile(i).getSortedPosition()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public boolean isSolvable() {
 		int[] indexes = this.grid.getTilesIndexes();
 		int voidParity = 0;
