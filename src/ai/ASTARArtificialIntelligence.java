@@ -59,4 +59,9 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 		
 	}
 
+	@Override
+	public String toString() {
+		return "A* Algorithm";
+	}
+
 }
