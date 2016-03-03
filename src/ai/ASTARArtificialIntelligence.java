@@ -25,56 +25,49 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	
 	
 	public List<PuzzleGrid<T>> aStarSolveMine(PuzzleGrid<T> puzzle) {
-		GridState<T> previous = new GridState<>(puzzle, 0, null);
-	  	Queue<PuzzleGrid<T>> puzzleQueue = new LinkedList<PuzzleGrid<T>>();
-	  	Queue<Integer> puzzleQueueCost = new LinkedList<Integer>();
+		HashMap<GridState<T>, GridState<T>> parent = new HashMap<GridState<T>, GridState<T>>();
+	  	Queue<GridState<T>> gridStateQueue = new LinkedList<GridState<T>>();
+		
+		GridState<T> currentState = new GridState<T>(puzzle, 0);
+		gridStateQueue.add(currentState);
 	  	
-	  	
-	  	puzzleQueue.add(puzzle);
-	  	puzzleQueueCost.add(0);
-	  	
-	  	while(!puzzleQueue.isEmpty()) {
+	  	while(!gridStateQueue.isEmpty()) {
+	  		GridState<T> polledGridState = gridStateQueue.poll();
 	  		
-	  		PuzzleGrid<T> popedPuzzle = puzzleQueue.poll();
-	  		int popedPuzzleCost = puzzleQueueCost.poll();
 	  		
-	  		List<PuzzleGrid<T>> adjacentsPuzzle = popedPuzzle.getAdjacentPuzzles();
+	  		if(polledGridState.getGrid().isSolved()) {
+  				System.out.println("WINNNEEEER");
+  				
+  				GridState<T> previous = polledGridState;
+  				while (parent.containsKey(previous)) {
+  					System.out.println(previous.getGrid());
+  					previous = parent.get(previous);
+  				}
+  				return null;
+  			}
 	  		
-	  		for(PuzzleGrid<T> adjPuzzle : adjacentsPuzzle) {
-	  			
-	  			
-	  			int adjPuzzleCost =  popedPuzzleCost +1;
-	  			
-	  			if(previous.has(adjPuzzle)) {
-	  				
-	  				if(adjPuzzleCost < previous.getCost()) {
-  						previous.refreshCost(adjPuzzleCost);
-			  			
-			  			puzzleQueue.add(adjPuzzle);
-			  			puzzleQueueCost.add(popedPuzzleCost);
-	  				}
-	  				
-	  			} else {
+	  		
+	  		List<PuzzleGrid<T>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
-	  				previous = new GridState<T>(popedPuzzle, adjPuzzleCost, previous);
+  			int adjacentCost = polledGridState.getCost() + 1;
+  			
+	  		for(PuzzleGrid<T> adjPuzzle : adjacentsPuzzle) {
+	  			GridState<T> adjacentState = new GridState<T>(adjPuzzle, adjacentCost);
 	  			
-		  			puzzleQueue.add(adjPuzzle);
-		  			puzzleQueueCost.add(popedPuzzleCost);
-	  			}
-	  			
-	  			
-	  			
-	  			if(adjPuzzle.isSolved()) {
-	  				System.out.println("WINNNEEEER");
-	  				
-	  				while (previous.previous() != null) {
-	  					System.out.println(previous.previous().getGrid());
-	  					previous = previous.previous();
+	  			if(parent.containsKey(adjacentState)) {
+	  				GridState<T> existingState = parent.get(adjacentState);
+	  		
+	  				if(adjacentCost < existingState.getCost()) {
+	  					existingState.refreshCost(adjacentCost);
+			  			
+	  					gridStateQueue.add(adjacentState);
 	  				}
-	  				return null;
+	  			} else {
+	  				parent.put(adjacentState, polledGridState);
+  					gridStateQueue.add(adjacentState);
 	  			}
+	  				  			
 	  			
-	
 	  		}
 	  	}
 		

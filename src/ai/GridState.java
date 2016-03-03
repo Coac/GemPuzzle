@@ -3,34 +3,16 @@ package ai;
 import element.PuzzleGrid;
 
 public class GridState<T> {
-	GridState<T> previous;
 	PuzzleGrid<T> grid;
 	int cost;
 	
-	public GridState(PuzzleGrid<T> grid, int cost, GridState<T> previous) {
+	public GridState(PuzzleGrid<T> grid, int cost) {
 		this.grid = grid;
 		this.cost = cost;
-		this.previous = previous;
 	}
 	
 	public void refreshCost(int cost) {
 		this.cost = cost;
-	}
-	
-	public GridState<T> previous() {
-		return this.previous;
-	}
-	
-	public boolean has(PuzzleGrid<T> grid) {
-		if (this.grid.equals(grid)) {
-			return true;
-		}
-			
-		if (this.previous == null) {
-			return false;
-		}
-		
-		return this.previous.has(grid);
 	}
 	
 	public int getCost() {
@@ -39,5 +21,14 @@ public class GridState<T> {
 	
 	public PuzzleGrid<T> getGrid() {
 		return this.grid;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof GridState)) {
+			return false;
+		}
+		
+		return ((GridState) obj).getGrid().equals(this.grid);
 	}
 }
