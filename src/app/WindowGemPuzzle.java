@@ -31,7 +31,7 @@ public class WindowGemPuzzle extends JFrame {
 		panelPreview = new PanelPreview(this);
 		add(panelPreview, BorderLayout.EAST);
 
-		setSize(800, 600);
+		setSize(1000, 700);
 		setLocationRelativeTo(this);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
