@@ -51,7 +51,6 @@ public class PanelPreview extends JPanel {
 
 			// Final Grid
 			String[][] sortedPuzzle = new String[n][n];
-			puzzleContext.getGrid().getNullIndex();
 			for (int i = 0; i < n * n; i++) {
 				int pos = puzzleContext.getGrid().getTile(i).getSortedPosition();
 				if (i == puzzleContext.getGrid().getNullIndex()) {

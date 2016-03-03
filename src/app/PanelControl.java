@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +111,7 @@ public class PanelControl extends JPanel implements ActionListener {
 					}
 				}
 
+				// New grid
 				List<Tile<Integer>> mixedTiles = new ArrayList<Tile<Integer>>();
 				int id = 1;
 				for (int i = 0; i < n * n; i++) {
@@ -141,11 +144,50 @@ public class PanelControl extends JPanel implements ActionListener {
 
 		} else if (e.getSource().equals(buttonSave)) {
 			// Save
-			JFileChooser fileChooser = new JFileChooser();
-			if (fileChooser.showSaveDialog(windowGemPuzzle) == JFileChooser.APPROVE_OPTION) {
-
+			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+			if (puzzleContext != null) {
+				JFileChooser fileChooser = new JFileChooser();
+				if (fileChooser.showSaveDialog(windowGemPuzzle) == JFileChooser.APPROVE_OPTION) {
+					try {
+						PrintWriter writer = new PrintWriter(fileChooser.getSelectedFile());
+						int n = puzzleContext.getGrid().size();
+						writer.println(n + "");
+						for (int j = 0; j < n; j++) {
+							for (int i = 0; i < n; i++) {
+								writer.write(puzzleContext.getGrid().getTile(i, j).getValue().toString() + " ");
+							}
+							writer.println("");
+						}
+						// Final Grid
+						String[][] sortedPuzzle = new String[n][n];
+						for (int i = 0; i < n * n; i++) {
+							int pos = puzzleContext.getGrid().getTile(i).getSortedPosition();
+							if (i == puzzleContext.getGrid().getNullIndex()) {
+								sortedPuzzle[pos % n][pos / n] = "0";
+							} else {
+								sortedPuzzle[pos % n][pos / n] = puzzleContext.getGrid().getTile(i).getValue()
+										.toString();
+							}
+						}
+						for (int j = 0; j < n; j++) {
+							for (int i = 0; i < n; i++) {
+								writer.write(sortedPuzzle[i][j] + " ");
+							}
+							writer.println("");
+						}
+						writer.close();
+					} catch (FileNotFoundException e1) {
+						// e1.printStackTrace();
+						JOptionPane.showMessageDialog(windowGemPuzzle, "Impossible d'écrire dans le fichier", "Erreur",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
 			}
-
+		} else if (e.getSource().equals(buttonNext)) {
+			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+			if (puzzleContext != null) {
+				
+			}
 		}
 	}
 }
