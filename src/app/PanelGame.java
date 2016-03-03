@@ -86,7 +86,7 @@ public class PanelGame extends JPanel implements MoveListener {
 						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
 					}
 
-					windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
+					// windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
 				}
 				selectedTile = -1;
 				repaint();
