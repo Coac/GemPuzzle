@@ -12,8 +12,6 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -23,7 +21,8 @@ import parser.PuzzleGridsIntegerParser;
 
 @SuppressWarnings("serial")
 public class PanelGame extends JPanel implements MoveListener {
-	private static final int MARGIN_CASE = 5;
+	public static final int MARGIN_CASE = 5;
+	public static final int MIN_SIZE_CASE = 42;
 
 	private boolean editable = false;
 
@@ -32,10 +31,10 @@ public class PanelGame extends JPanel implements MoveListener {
 	private double animationProgress = 1;
 
 	private WindowGemPuzzle windowGemPuzzle;
-	
+
 	public PanelGame(WindowGemPuzzle windowGemPuzzle) {
 		this.windowGemPuzzle = windowGemPuzzle;
-		
+
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
 			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
@@ -73,9 +72,9 @@ public class PanelGame extends JPanel implements MoveListener {
 	public void move(MoveDirection moveDirection) {
 		if (puzzleContext.move(moveDirection)) {
 			// TODO: show final state
-			
+
 			windowGemPuzzle.getPanelHistory().updateHistory();
-			
+
 			// Animation
 			new Thread(new Runnable() {
 				public void run() {
@@ -96,6 +95,34 @@ public class PanelGame extends JPanel implements MoveListener {
 		}
 	}
 
+	public void drawTile(Graphics2D g, String str, int x, int y, int size) {
+		if (str == null) {
+			// Null element
+			g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1, new float[] { 5, 5 }, 0));
+			g.setColor(new Color(100, 100, 100));
+
+			g.drawRoundRect(x, y, size - MARGIN_CASE, size - MARGIN_CASE, 8, 8);
+			
+		} else {
+			// Tile
+			Font font = new Font("Default", Font.BOLD, size / 3);
+			FontMetrics metrics = g.getFontMetrics(font);
+			g.setFont(font);
+
+			g.setStroke(new BasicStroke(2));
+			g.setColor(new Color(200, 200, 200));
+
+			g.fillRoundRect(x, y, size - MARGIN_CASE, size - MARGIN_CASE, 8, 8);
+
+			g.setColor(new Color(100, 100, 100));
+			g.drawRoundRect(x, y, size - MARGIN_CASE, size - MARGIN_CASE, 8, 8);
+
+			int fontX = (size - metrics.stringWidth(str)) / 2;
+			int fontY = (size + metrics.getAscent() - metrics.getDescent()) / 2;
+			g.drawString(str, x + fontX, y + fontY);
+		}
+	}
+
 	@Override
 	public void paint(Graphics graph) {
 		Graphics2D g = (Graphics2D) graph;
@@ -106,8 +133,8 @@ public class PanelGame extends JPanel implements MoveListener {
 
 		// Font
 		int n = puzzleContext.getGrid().size();
-		int sizeCase = Math.min(getWidth(), getHeight()) / n - MARGIN_CASE;
-		Font font = new Font("Default", Font.BOLD, sizeCase / 2);
+		int sizeCase = Math.max(MIN_SIZE_CASE, Math.min(getWidth(), getHeight()) / n - MARGIN_CASE);
+		Font font = new Font("Default", Font.BOLD, sizeCase / 3);
 		FontMetrics metrics = g.getFontMetrics(font);
 		g.setFont(font);
 
@@ -134,27 +161,15 @@ public class PanelGame extends JPanel implements MoveListener {
 							y = (j + (1 - animationProgress)) * sizeCase;
 						}
 					}
+					y += (getHeight() - n * sizeCase - 2 * PanelGame.MARGIN_CASE) / 2;
 
 					// Tile
-					g.setStroke(new BasicStroke(2));
-					g.setColor(new Color(200, 200, 200));
-
-					g.fillRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
-							sizeCase - MARGIN_CASE, 16, 16);
-
-					g.setColor(new Color(100, 100, 100));
-					g.drawRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
-							sizeCase - MARGIN_CASE, 16, 16);
-
 					String str = puzzleContext.getGrid().getElement(i, j).toString();
-					int fontX = (sizeCase - metrics.stringWidth(str)) / 2;
-					int fontY = (sizeCase + metrics.getAscent() - metrics.getDescent()) / 2;
-					g.drawString(str, 2 * MARGIN_CASE + (int) x + fontX, 2 * MARGIN_CASE + (int) y + fontY);
+					drawTile(g, str, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
 				} else {
 					// Animation
 					double x = i * sizeCase;
 					double y = j * sizeCase;
-
 					if (puzzleContext.getHistory().last() != null) {
 						if (puzzleContext.getHistory().last().equals(MoveDirection.Left)) {
 							x = (i + (1 - animationProgress)) * sizeCase;
@@ -168,14 +183,10 @@ public class PanelGame extends JPanel implements MoveListener {
 							y = (j - (1 - animationProgress)) * sizeCase;
 						}
 					}
+					y += (getHeight() - n * sizeCase - 2 * PanelGame.MARGIN_CASE) / 2;
 
 					// Null element
-					g.setStroke(new BasicStroke(2, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER, 1,
-							new float[] { 5, 5 }, 0));
-					g.setColor(new Color(100, 100, 100));
-
-					g.drawRoundRect(2 * MARGIN_CASE + (int) x, 2 * MARGIN_CASE + (int) y, sizeCase - MARGIN_CASE,
-							sizeCase - MARGIN_CASE, 16, 16);
+					drawTile(g, null, MARGIN_CASE + (int) x, MARGIN_CASE + (int) y, sizeCase);
 				}
 			}
 		}
@@ -188,8 +199,8 @@ public class PanelGame extends JPanel implements MoveListener {
 	public boolean isEditable() {
 		return editable;
 	}
-	
-	public PuzzleContext<Integer> getPuzzleContext(){
+
+	public PuzzleContext<Integer> getPuzzleContext() {
 		return puzzleContext;
 	}
 }

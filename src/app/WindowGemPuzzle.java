@@ -10,7 +10,8 @@ public class WindowGemPuzzle extends JFrame {
 	private PanelGame panelGame;
 	private PanelControl panelControl;
 	private PanelHistory panelHistory;
-	
+	private PanelPreview panelPreview;
+
 	public WindowGemPuzzle() {
 		super("GemPuzzle");
 
@@ -26,6 +27,9 @@ public class WindowGemPuzzle extends JFrame {
 
 		panelHistory = new PanelHistory(this);
 		add(panelHistory, BorderLayout.SOUTH);
+
+		panelPreview = new PanelPreview(this);
+		add(panelPreview, BorderLayout.EAST);
 
 		setSize(800, 600);
 		setLocationRelativeTo(this);
@@ -43,5 +47,9 @@ public class WindowGemPuzzle extends JFrame {
 
 	public PanelHistory getPanelHistory() {
 		return panelHistory;
+	}
+
+	public PanelPreview getPanelPreview() {
+		return panelPreview;
 	}
 }
