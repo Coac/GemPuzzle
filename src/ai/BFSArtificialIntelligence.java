@@ -18,10 +18,10 @@ public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 		int iterationsNumber=0;
 		
 	  	while(!puzzleQueue.isEmpty()) {
-	  		PuzzleGrid<T> poppedPuzzle = puzzleQueue.poll();
-	  		if(poppedPuzzle.isSolved()) {
+	  		PuzzleGrid<T> polledPuzzle = puzzleQueue.poll();
+	  		if(polledPuzzle.isSolved()) {
 	  			//done
-  				PuzzleGrid<T> searchPuzzlePredecessor = poppedPuzzle;
+  				PuzzleGrid<T> searchPuzzlePredecessor = polledPuzzle;
   				//make history 
   				while(history.containsKey(searchPuzzlePredecessor)) {
   					searchPuzzlePredecessor = history.get(searchPuzzlePredecessor);
@@ -30,10 +30,10 @@ public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
   				return null;
   			}
 	  		
-	  		List<PuzzleGrid<T>> adjacentsPuzzle = poppedPuzzle.getAdjacentPuzzles();	  		
+	  		List<PuzzleGrid<T>> adjacentsPuzzle = polledPuzzle.getAdjacentPuzzles();	  		
 	  		for(PuzzleGrid<T> adjPuzzle : adjacentsPuzzle) {	  			
 	  			if(!history.containsKey(adjPuzzle)) {
-	  				history.put(adjPuzzle, poppedPuzzle);
+	  				history.put(adjPuzzle, polledPuzzle);
 		  			puzzleQueue.add(adjPuzzle);
 	  			}	  			
 	  		}
