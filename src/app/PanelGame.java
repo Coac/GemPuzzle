@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.Move.MoveDirection;
@@ -34,14 +35,14 @@ public class PanelGame extends JPanel implements MoveListener {
 	private int selectedTile;
 
 	private PuzzleContext<Integer> puzzleContext;
-	
-	private WindowGemPuzzle windowGemPuzzle;
 
-	public PanelGame(WindowGemPuzzle windowGemPuzzle) {
+	private final WindowGemPuzzle windowGemPuzzle;
+
+	public PanelGame(final WindowGemPuzzle windowGemPuzzle) {
 		this.windowGemPuzzle = windowGemPuzzle;
 
 		puzzleContext = null;
-		
+
 		rectangleCases = null;
 		selectedTile = -1;
 
@@ -66,6 +67,7 @@ public class PanelGame extends JPanel implements MoveListener {
 						break;
 					}
 				}
+
 				return false;
 			}
 		});
@@ -83,6 +85,8 @@ public class PanelGame extends JPanel implements MoveListener {
 					if (newTile >= 0) {
 						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
 					}
+
+					windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
 				}
 				selectedTile = -1;
 				repaint();
@@ -132,6 +136,11 @@ public class PanelGame extends JPanel implements MoveListener {
 						repaint();
 					}
 				}).start();
+
+				if (puzzleContext.isSolved()) {
+					JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		}
 	}

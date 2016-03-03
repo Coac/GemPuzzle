@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,6 +25,7 @@ import ai.BFSArtificialIntelligence;
 import ai.DFSArtificialIntelligence;
 import element.PuzzleGrid;
 import element.Tile;
+import game.History;
 import game.PuzzleContext;
 import parser.PuzzleGridsIntegerParser;
 
@@ -36,6 +38,9 @@ public class PanelControl extends JPanel implements ActionListener {
 
 	private JButton buttonSolve;
 	private JButton buttonNext;
+
+	private JComboBox listAI;
+	private JLabel labelSolvable;
 
 	private WindowGemPuzzle windowGemPuzzle;
 
@@ -54,9 +59,8 @@ public class PanelControl extends JPanel implements ActionListener {
 		panel1.add(buttonSave);
 		add(panel1);
 
-		JComboBox<AbstractArtificialIntelligence> listAI = new JComboBox<>(
-				new AbstractArtificialIntelligence[] { new ASTARArtificialIntelligence<>(),
-						new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
+		listAI = new JComboBox(new AbstractArtificialIntelligence[] { new ASTARArtificialIntelligence<>(),
+				new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
 		add(listAI);
 
 		buttonNext = new JButton("Aide");
@@ -65,6 +69,18 @@ public class PanelControl extends JPanel implements ActionListener {
 		buttonSolve = new JButton("Résoudre");
 		buttonSolve.addActionListener(this);
 		add(buttonSolve);
+
+		labelSolvable = new JLabel();
+		labelSolvable.setForeground(Color.RED);
+		add(labelSolvable);
+	}
+
+	public void setSolvable(boolean solvable) {
+		if (solvable) {
+			labelSolvable.setText("");
+		} else {
+			labelSolvable.setText("Attention: grille impossible");
+		}
 	}
 
 	@Override
@@ -73,7 +89,7 @@ public class PanelControl extends JPanel implements ActionListener {
 			// New
 			Object[] possibilities = { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 			Object nb = JOptionPane.showInputDialog(windowGemPuzzle, "Longueur du puzzle", "Longueur",
-					JOptionPane.PLAIN_MESSAGE, null, new Object[] { 2, 3, 4, 5, 6, 7, 8, 9 }, 4);
+					JOptionPane.PLAIN_MESSAGE, null, new Object[] { 2, 3, 4, 5, 6, 7, 8, 9 }, 3);
 			if (nb != null) {
 				int n = Integer.parseInt(nb.toString());
 
@@ -183,11 +199,48 @@ public class PanelControl extends JPanel implements ActionListener {
 					}
 				}
 			}
+
 		} else if (e.getSource().equals(buttonNext)) {
+			// Next move
 			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
 			if (puzzleContext != null) {
-				
+				AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
+				puzzleContext.setAI(ai);
+				ai.setGrid(puzzleContext.getGrid());
+				windowGemPuzzle.getPanelGame().move(ai.getNextMove().get());
+			}
+
+		} else if (e.getSource().equals(buttonSolve)) {
+			// Solve
+			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+			if (puzzleContext != null) {
+				final AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
+				puzzleContext.setAI(ai);
+				ai.setGrid(puzzleContext.getGrid());
+				long time = System.nanoTime();
+				final History history = ai.solve();
+				final double elapsedTime = (System.nanoTime() - time);
+				new Thread(new Runnable() {
+					public void run() {
+						for (int i = 0; i < history.size(); i++) {
+							windowGemPuzzle.getPanelGame().move(history.get(i).get());
+							try {
+								Thread.sleep(2000 / history.size());
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						String stat = "Temps CPU: " + (elapsedTime / 1e9) + "s\nNombre d'itérations: "
+								+ ai.getIterationsNumber() + "\n\n";
+						for (int i = 0; i < ai.getStatistics().size(); i++) {
+							stat += ai.getStatistics().get(i) + "\n";
+						}
+						JOptionPane.showMessageDialog(windowGemPuzzle, stat, "Statistiques", JOptionPane.PLAIN_MESSAGE);
+					}
+				}).start();
 			}
 		}
+
+		windowGemPuzzle.getPanelHistory().updateHistory();
 	}
 }
