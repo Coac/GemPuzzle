@@ -41,4 +41,8 @@ public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 	  	}
 	}
 
+	@Override
+	public String toString() {
+		return "BFS Solver";
+	}
 }
