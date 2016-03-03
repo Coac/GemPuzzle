@@ -177,10 +177,11 @@ public class PuzzleGrid<T> {
 		if(puzzleRight.setMove(new Move(MoveDirection.Right))) {
 			list.add(puzzleRight);
 		}
+
 		return list;
 	}
 
-	public int estimateError() {
+	public int getNbMisplacedTiles() {
 		int count = 0;
 		for (int i = 0; i < this.getNbTiles(); i++) {
 			if(this.tiles.get(i).getSortedPosition() != i) {
@@ -189,4 +190,24 @@ public class PuzzleGrid<T> {
 		}
 		return count;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			  return false;
+		if (!(obj instanceof PuzzleGrid))
+		  return false;
+		
+		PuzzleGrid<T> puzzle = (PuzzleGrid<T>) obj;
+		for (int i = 0; i < this.getNbTiles(); i++) {
+			if(!this.getTile(i).equals(puzzle.getTile(i))) {
+				return false;
+			}
+		}
+			
+			
+		return true;
+	}
+	
+	
 }
