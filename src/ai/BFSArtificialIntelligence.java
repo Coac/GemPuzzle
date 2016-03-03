@@ -11,7 +11,7 @@ import game.Move;
 public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence<T>{
 
 	@Override
-	public History solve() {
+	public void silentSolve() {
 	  	HashMap<PuzzleGrid<T>,PuzzleGrid<T>> history = new HashMap<PuzzleGrid<T>,PuzzleGrid<T>>();
 	  	LinkedList<PuzzleGrid<T>> puzzleQueue = new LinkedList<PuzzleGrid<T>>();
 	  	//counter (other counters should be implemented : add/remove of each strucutres + max size)
@@ -27,7 +27,7 @@ public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
   					searchPuzzlePredecessor = history.get(searchPuzzlePredecessor);
   					System.out.println(searchPuzzlePredecessor);
   				}
-  				return null;
+  				return;
   			}
 	  		
 	  		List<PuzzleGrid<T>> adjacentsPuzzle = polledPuzzle.getAdjacentPuzzles();	  		
@@ -39,13 +39,6 @@ public class BFSArtificialIntelligence<T> extends AbstractArtificialIntelligence
 	  		}
 	  		iterationsNumber++;
 	  	}
-		return null;
-	}
-
-
-	@Override
-	public Move getNextMove() {
-		return null;
 	}
 
 }
