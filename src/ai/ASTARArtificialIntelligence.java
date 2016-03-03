@@ -7,14 +7,17 @@ import java.util.Queue;
 
 import element.PuzzleGrid;
 import game.Move;
+import utils.HashMapWithCounters;
 import utils.Pair;
+import utils.PriorityQueueWithCounters;
 
 public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
 	
 	public void silentSolve() {
-		HashMap<GridState<T>, GridState<T>> parent = new HashMap<GridState<T>, GridState<T>>();
-	  	Queue<GridState<T>> gridStateQueue = new PriorityQueue<GridState<T>>();
-		
+		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
+	  	PriorityQueueWithCounters<GridState<T>> gridStateQueue = new PriorityQueueWithCounters<GridState<T>>();
+	  	int iterationsNumber=0;
+	  	
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);
 	  	
@@ -55,8 +58,9 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
   					gridStateQueue.add(adjacentState);
 	  			}
 	  		}
-	  	}
-		
+
+	  		iterationsNumber++;
+	  	}		
 	}
 
 	@Override
