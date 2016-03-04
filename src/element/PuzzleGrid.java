@@ -21,9 +21,11 @@ public class PuzzleGrid<T> {
 		this.tiles = tiles;
 		this.nullIndex = nullIndex;
 	}
-	
+
 	public PuzzleGrid<T> clone() {
-		return new PuzzleGrid<T>(this.size, (List<Tile<T>>)((ArrayList<Tile<T>>) this.tiles).clone(), this.nullIndex);
+		return new PuzzleGrid<T>(this.size,
+				(List<Tile<T>>) ((ArrayList<Tile<T>>) this.tiles).clone(),
+				this.nullIndex);
 	}
 
 	public int size() {
@@ -45,7 +47,7 @@ public class PuzzleGrid<T> {
 	public T getElement(int i, int j) {
 		return this.getTile(i, j).getValue();
 	}
-	
+
 	public boolean canMove(Move move) {
 		switch (move.get()) {
 		case Down:
@@ -60,16 +62,16 @@ public class PuzzleGrid<T> {
 			return false;
 		}
 	}
-	
+
 	public void move(Move move) {
 		if (!this.canMove(move)) {
 			return;
 		}
-		
+
 		switch (move.get()) {
 		case Down:
-			 this.swapIndex(nullIndex, nullIndex + size);
-			 break;
+			this.swapIndex(nullIndex, nullIndex + size);
+			break;
 		case Left:
 			this.swapIndex(nullIndex, nullIndex - 1);
 			break;
@@ -83,10 +85,10 @@ public class PuzzleGrid<T> {
 		}
 	}
 
-	public int getTileIndex(Tile<T> t){
+	public int getTileIndex(Tile<T> t) {
 		return this.tiles.indexOf(t);
 	}
-	
+
 	public int[] getTilesIndexes() {
 		int[] indexes = new int[this.getNbTiles()];
 		for (int i = 0; i < this.getNbTiles(); i++) {
@@ -99,10 +101,10 @@ public class PuzzleGrid<T> {
 		Tile<T> temp = this.tiles.get(index1);
 		this.tiles.set(index1, this.tiles.get(index2));
 		this.tiles.set(index2, temp);
-		
-		if(index1 == nullIndex){
+
+		if (index1 == nullIndex) {
 			nullIndex = index2;
-		}else if(index2 == nullIndex){
+		} else if (index2 == nullIndex) {
 			nullIndex = index1;
 		}
 	}
@@ -129,40 +131,41 @@ public class PuzzleGrid<T> {
 		}
 		return true;
 	}
-	
-	public boolean isSolvable(){
+
+	public boolean isSolvable() {
 		int[] indexes = this.getTilesIndexes();
 		int voidParity = 0;
 		int voidIndex = this.getTile(this.nullIndex).getSortedPosition();
 		int permutationsNumber = 0;
-		
-		//First, we calculate the void "parity"
-		int i = 0; 
-		while(indexes[i] != voidIndex){
-			 i++;
+
+		// First, we calculate the void "parity"
+		int i = 0;
+		while (indexes[i] != voidIndex) {
+			i++;
 		}
 		/*
-		voidParity = (size-1)*2 - i;
-		*/
-		voidParity = (voidIndex / this.size) + (voidIndex % this.size) - i/this.size - i%size;
-		//need positive integer
-		if(voidParity < 0)
+		 * voidParity = (size-1)*2 - i;
+		 */
+		voidParity = (voidIndex / this.size) + (voidIndex % this.size) - i
+				/ this.size - i % size;
+		// need positive integer
+		if (voidParity < 0)
 			voidParity = -voidParity;
-	
-		for(i = 0; i < this.size; i++){
-			for(int j = 0; j < this.size; j++){
-				int valeur = indexes[i*this.size+j];
-				if(valeur!= i*size+j){ 
-					indexes[i*this.size+j] = indexes[valeur];
-					indexes[valeur]=valeur;
+
+		for (i = 0; i < this.size; i++) {
+			for (int j = 0; j < this.size; j++) {
+				int valeur = indexes[i * this.size + j];
+				if (valeur != i * size + j) {
+					indexes[i * this.size + j] = indexes[valeur];
+					indexes[valeur] = valeur;
 					permutationsNumber++;
 					j--;
 				}
 			}
 		}
-		return ((voidParity % 2)^(permutationsNumber % 2)) == 0;
+		return ((voidParity % 2) ^ (permutationsNumber % 2)) == 0;
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "";
@@ -177,13 +180,14 @@ public class PuzzleGrid<T> {
 	}
 
 	/**
-	 * Return the grid configurations available from current grid by moving
-	 * a tile up,left,right or down.
+	 * Return the grid configurations available from current grid by moving a
+	 * tile up,left,right or down.
+	 * 
 	 * @return a list of grid configurations
 	 */
 	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
-		
+
 		for (Move move : Move.getMoves()) {
 			if (this.canMove(move)) {
 				PuzzleGrid<T> puzzleMove = this.clone();
@@ -198,29 +202,29 @@ public class PuzzleGrid<T> {
 	public int getNbMisplacedTiles() {
 		int count = 0;
 		for (int i = 0; i < this.getNbTiles(); i++) {
-			if(this.tiles.get(i).getSortedPosition() != i) {
+			if (this.tiles.get(i).getSortedPosition() != i) {
 				++count;
 			}
 		}
 		return count;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
-			  return false;
+			return false;
 		}
 		if (!(obj instanceof PuzzleGrid)) {
-		  return false;
+			return false;
 		}
-		
+
 		PuzzleGrid<T> puzzle = (PuzzleGrid<T>) obj;
 		for (int i = 0; i < this.getNbTiles(); i++) {
-			if(!this.getTile(i).equals(puzzle.getTile(i))) {
+			if (!this.getTile(i).equals(puzzle.getTile(i))) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }

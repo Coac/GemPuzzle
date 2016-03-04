@@ -33,7 +33,7 @@ public class PuzzleContext<T> {
 		if (!this.grid.canMove(move)) {
 			return false;
 		}
-		
+
 		this.grid.move(move);
 		history.add(move);
 		return true;
