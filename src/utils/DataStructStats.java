@@ -17,6 +17,9 @@ public class DataStructStats {
 		this.name = structName;
 	}
 
+	/**
+	 * Increase the add counter
+	 */
 	public void addInc() {
 		this.addCount++;
 		this.maximumSize = Math.max(this.maximumSize, this.addCount);
@@ -26,6 +29,9 @@ public class DataStructStats {
 		return this.addCount;
 	}
 
+	/**
+	 * Increase the remove counter
+	 */
 	public void removeInc() {
 		this.removeCount++;
 	}

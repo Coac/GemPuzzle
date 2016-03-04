@@ -65,6 +65,4 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 	
 	public abstract int getHeuristic(PuzzleGrid<T> puzzle);
 
-	
-
 }

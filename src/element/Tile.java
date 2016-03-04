@@ -19,6 +19,10 @@ public class Tile<T> {
 		return this.getSortedPosition();
 	}
 	
+	/**
+	 * Return the index the title should be located at
+	 * @return a index of a PuzzleGrid
+	 */
 	public int getSortedPosition() {
 		return this.sortedPosition;
 	}
