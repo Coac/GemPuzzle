@@ -11,7 +11,8 @@ public class Test {
 		PuzzleContext<Integer> puzzleContext = null;
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
-			puzzleContext = new PuzzleContext<Integer>(parser.parseFile(new File("assets/test.txt")));
+			puzzleContext = new PuzzleContext<Integer>(
+					parser.parseFile(new File("assets/sp007.txt")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -19,18 +20,20 @@ public class Test {
 
 		System.out.println(puzzleContext.toString());
 
-		System.out.println(puzzleContext.isSolved());
-
 		AbstractArtificialIntelligence<Integer> ai = new AStarManhattanArtificialIntelligence<Integer>();
 
 		ai.setGrid(puzzleContext.getGrid());
-		// System.out.println(puzzleContext.isSolvable());
+		if (puzzleContext.isSolvable()) {
+			System.out.println("isSolvable = TRUE");
 
-		long time = System.nanoTime();
-		System.out.println(ai.solve().toString());
+			long time = System.nanoTime();
+			System.out.println(ai.solve().toString());
+			System.out.println((System.nanoTime() - time) / 1000000 + " ms");
 
-		// aStarSolve(puzzleContext.getGrid());
-		System.out.println((System.nanoTime() - time) / 1000000 + " ms");
+		} else {
+			System.out.println("isSolvable = FALSE");
+		}
+
 	}
 
 }
