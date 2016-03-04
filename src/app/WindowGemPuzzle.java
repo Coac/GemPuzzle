@@ -15,8 +15,6 @@ public class WindowGemPuzzle extends JFrame {
 	public WindowGemPuzzle() {
 		super("GemPuzzle");
 
-		// New, load, save
-
 		setLayout(new BorderLayout());
 
 		panelGame = new PanelGame(this);
