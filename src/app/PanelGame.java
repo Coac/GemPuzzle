@@ -86,7 +86,7 @@ public class PanelGame extends JPanel implements MoveListener {
 						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
 					}
 
-					// windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
+					windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
 				}
 				selectedTile = -1;
 				repaint();
@@ -94,13 +94,17 @@ public class PanelGame extends JPanel implements MoveListener {
 
 			public void mousePressed(MouseEvent e) {
 				selectedTile = -1;
-				if (rectangleCases != null) {
+				if (editable && rectangleCases != null) {
 					for (int i = 0; i < rectangleCases.length; i++) {
 						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
 							selectedTile = i;
 						}
 					}
 				}
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				// TODO: move
 			}
 		});
 
