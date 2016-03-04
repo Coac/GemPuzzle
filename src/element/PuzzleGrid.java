@@ -175,21 +175,25 @@ public class PuzzleGrid<T> {
 	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		
-		PuzzleGrid<T> puzzleUp = this.clone();
-		if(puzzleUp.setMove(new Move(MoveDirection.Up))) {
+		if(this.setMove(new Move(MoveDirection.Up))) {
+			PuzzleGrid<T> puzzleUp = this.clone();
 			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleUp, new Move(MoveDirection.Up)));
-		}
-		PuzzleGrid<T> puzzleLeft = this.clone();
-		if(puzzleLeft.setMove(new Move(MoveDirection.Left))) {
+			this.setMove(new Move(MoveDirection.Down));
+		}		
+		if(this.setMove(new Move(MoveDirection.Left))) {
+			PuzzleGrid<T> puzzleLeft = this.clone();
 			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleLeft, new Move(MoveDirection.Left)));
+			this.setMove(new Move(Move.MoveDirection.Right));
 		}
-		PuzzleGrid<T> puzzleDown = this.clone();
-		if(puzzleDown.setMove(new Move(MoveDirection.Down))) {
+		if(this.setMove(new Move(MoveDirection.Down))) {
+			PuzzleGrid<T> puzzleDown = this.clone();
 			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleDown, new Move(MoveDirection.Down)));
+			this.setMove(new Move(MoveDirection.Up));
 		}
-		PuzzleGrid<T> puzzleRight = this.clone();
-		if(puzzleRight.setMove(new Move(MoveDirection.Right))) {
+		if(this.setMove(new Move(MoveDirection.Right))) {
+			PuzzleGrid<T> puzzleRight = this.clone();
 			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleRight, new Move(MoveDirection.Right)));
+			this.setMove(new Move(MoveDirection.Left));
 		}
 
 		return list;
