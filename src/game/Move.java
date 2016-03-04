@@ -18,6 +18,21 @@ public class Move {
 	public MoveDirection get() {
 		return this.move;
 	}
+	
+	public boolean isInversed(Move move) {
+		switch (this.move) {
+		case Down:
+			return move.get() == MoveDirection.Up;
+		case Left:
+			return move.get() == MoveDirection.Right;
+		case Right:
+			return move.get() == MoveDirection.Left;
+		case Up:
+			return move.get() == MoveDirection.Down;
+		default:
+			return false;
+		}
+	}
 
 	@Override
 	public String toString() {
