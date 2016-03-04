@@ -16,6 +16,11 @@ public class ListWithCounters<E> extends LinkedList<E>{
 	}
 	
 	@Override
+	public boolean add(E e) {
+		this.statistics.addInc();
+		return super.add(e);
+	}
+	@Override
 	public E remove() {
 		this.statistics.removeInc();
 		return super.remove();
