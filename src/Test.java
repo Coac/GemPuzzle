@@ -1,8 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import ai.AStarManhattanArtificialIntelligence;
 import ai.AbstractArtificialIntelligence;
+import ai.DFSArtificialIntelligence;
 import game.PuzzleContext;
 import parser.PuzzleGridsIntegerParser;
 
@@ -12,7 +12,7 @@ public class Test {
 		PuzzleGridsIntegerParser parser = new PuzzleGridsIntegerParser();
 		try {
 			puzzleContext = new PuzzleContext<Integer>(
-					parser.parseFile(new File("assets/sp007.txt")));
+					parser.parseFile(new File("assets/sp002.txt")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -20,7 +20,7 @@ public class Test {
 
 		System.out.println(puzzleContext.toString());
 
-		AbstractArtificialIntelligence<Integer> ai = new AStarManhattanArtificialIntelligence<Integer>();
+		AbstractArtificialIntelligence<Integer> ai = new DFSArtificialIntelligence<Integer>();
 
 		ai.setGrid(puzzleContext.getGrid());
 		if (puzzleContext.isSolvable()) {
