@@ -163,9 +163,6 @@ public class PuzzleGrid<T> {
 		return true;
 	}
 	
-	/**
-	 * Utilise les permutations afin de déterminer si la grille initiale est solvable.
-	 */
 	public boolean isSolvable(){
 		int[] indexes = this.getTilesIndexes();
 		int voidParity = 0;
@@ -212,6 +209,11 @@ public class PuzzleGrid<T> {
 		return str;
 	}
 
+	/**
+	 * Return the grid configurations available from current grid by moving
+	 * a tile up,left,right or down.
+	 * @return a list of grid configurations
+	 */
 	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		

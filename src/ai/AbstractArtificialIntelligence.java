@@ -47,10 +47,17 @@ public abstract class AbstractArtificialIntelligence<T> {
 		this.iterationsNumber = 0;
 		
 	}
+	
 	protected abstract void silentSolve();
 	
 	public abstract String toString();
 	
+	/**
+	 * Return the add count, remove count and maximum size of each
+	 * data structure as objects
+	 * @return the statistics of each data structure
+	 * @see DataStructStats
+	 */
 	public ArrayList<DataStructStats> getStatistics(){
 		return this.stats;
 	}
