@@ -2,8 +2,11 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractListModel;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -15,10 +18,11 @@ import game.PuzzleContext;
 public class PanelHistory extends JPanel {
 	private JList listHistory;
 	private JLabel labelNbMoves;
+	private JButton buttonClear;
 
 	private WindowGemPuzzle windowGemPuzzle;
 
-	public PanelHistory(WindowGemPuzzle windowGemPuzzle) {
+	public PanelHistory(final WindowGemPuzzle windowGemPuzzle) {
 		super(new BorderLayout());
 
 		this.windowGemPuzzle = windowGemPuzzle;
@@ -34,6 +38,17 @@ public class PanelHistory extends JPanel {
 		
 		labelNbMoves = new JLabel();
 		add(labelNbMoves, BorderLayout.EAST);
+		
+		buttonClear = new JButton("Vider l'historique");
+		buttonClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+				if (puzzleContext != null) {
+					puzzleContext.getHistory().clear();
+				}
+			}
+		});
+		add(buttonClear, BorderLayout.WEST);
 	}
 
 	public void updateHistory() {
