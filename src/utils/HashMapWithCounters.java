@@ -2,14 +2,17 @@ package utils;
 
 import java.util.HashMap;
 
-public class HashMapWithCounters<K, V> extends HashMap<K, V>{
+public class HashMapWithCounters<K, V> extends HashMap<K, V> {
+
+	private static final long serialVersionUID = 348408764236186110L;
+
 	private DataStructStats statistics;
-	
-	public HashMapWithCounters(){
+
+	public HashMapWithCounters() {
 		super();
 		this.statistics = new DataStructStats("HashMap");
 	}
-	
+
 	@Override
 	public V put(K key, V value) {
 		this.statistics.addInc();
@@ -21,8 +24,8 @@ public class HashMapWithCounters<K, V> extends HashMap<K, V>{
 		this.statistics.removeInc();
 		return super.remove(key);
 	}
-	
-	public DataStructStats getStatistics(){
+
+	public DataStructStats getStatistics() {
 		return statistics;
 	}
 }
