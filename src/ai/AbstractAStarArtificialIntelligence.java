@@ -22,6 +22,10 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 			List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
 			for (Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
+				if(polledGridState.getMove() != null && adjPuzzle.getSecond().isInversed(polledGridState.getMove())) {
+					continue;
+				}
+				
 				int adjacentCost = polledGridState.getCost() + 1 + this.getHeuristic(adjPuzzle.getFirst());
 				GridState<T> adjacentState = new GridState<T>(adjPuzzle.getFirst(), adjacentCost,
 						adjPuzzle.getSecond());
