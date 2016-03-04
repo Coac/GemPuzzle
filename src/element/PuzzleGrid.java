@@ -213,9 +213,11 @@ public class PuzzleGrid<T> {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		
 		for (Move move : Move.getMoves()) {
-			PuzzleGrid<T> puzzleMove = this.clone();
-			puzzleMove.move(move);
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleMove, move));
+			if (this.canMove(move)) {
+				PuzzleGrid<T> puzzleMove = this.clone();
+				puzzleMove.move(move);
+				list.add(new Pair<PuzzleGrid<T>, Move>(puzzleMove, move));
+			}
 		}
 
 		return list;
