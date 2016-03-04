@@ -37,8 +37,9 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 				int adjCost = polledState.getCost() + 1 + this.getHeuristic(adjPuzzle.getFirst());
 				GridState<T> adjState = new GridState<T>(adjPuzzle.getFirst(), adjCost, adjPuzzle.getSecond());
 				
-				GridState<T> existingState = this.updateParents(adjState, polledState);
-				this.updateQueue(existingState);
+				if(this.updateParents(adjState, polledState)) {
+					this.updateQueue(adjState);
+				}
 			}
 
 			++this.iterationsNumber;
@@ -48,21 +49,22 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 		this.saveStatisticsAndHistory(polledState);
 	}
 	
-	private GridState<T> updateParents(GridState<T> currentState, GridState<T> parentState) {
+	private boolean updateParents(GridState<T> currentState, GridState<T> parentState) {
 		GridState<T> existingState = this.parents.get(currentState);
 		
 		if (existingState == null) {
 			this.parents.put(currentState, parentState);
-			
-			return currentState;
+			return true;
 		}
 		
 		if (currentState.getCost() < existingState.getCost()) {
 			existingState.refreshCost(currentState.getCost());
 			existingState.refreshMove(currentState.getMove());
-		}
+			return true;
+		} 
 		
-		return existingState;
+		return false;
+		
 	}
 	
 	private void updateQueue(GridState<T> state) {
