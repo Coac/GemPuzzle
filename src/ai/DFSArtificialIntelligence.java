@@ -10,69 +10,90 @@ import element.PuzzleGrid;
 import game.Move;
 
 public class DFSArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
+	private HashMapWithCounters<GridState<T>, GridState<T>> parents;
+	private ListWithCounters<GridState<T>> stateQueue;
 	
 	private int maxNode = 100;
+	
+	public DFSArtificialIntelligence() {
+		this.parents = new HashMapWithCounters<GridState<T>, GridState<T>>();
+		this.stateQueue = new ListWithCounters<GridState<T>>();
+	}
+	
 	@Override
 	public void silentSolve() {
-		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
-		ListWithCounters<GridState<T>> gridStateQueue = new ListWithCounters<GridState<T>>();
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
-		gridStateQueue.add(currentState);
+		this.stateQueue.add(currentState);
 
-		GridState<T> polledGridState = gridStateQueue.poll();
-		while (!polledGridState.getGrid().isSolved()) {
-			if(polledGridState.getCost() < maxNode) {
-				List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
+		GridState<T> polledState = this.stateQueue.poll();
+		while (!polledState.getGrid().isSolved()) {
+			if(polledState.getCost() < this.maxNode) {
+				List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledState.getGrid().getAdjacentPuzzles();
 	
 				for (Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
-					if(polledGridState.getMove() != null && adjPuzzle.getSecond().isInversed(polledGridState.getMove())) {
+					if(polledState.getMove() != null && adjPuzzle.getSecond().isInversed(polledState.getMove())) {
 						continue;
 					}
 					
-					int adjacentCost = polledGridState.getCost() + 1;
-					GridState<T> adjacentState = new GridState<T>(adjPuzzle.getFirst(), adjacentCost,
-							adjPuzzle.getSecond());
-	
-					GridState<T> existingState = parent.get(adjacentState);
-					if (existingState != null && adjacentCost < existingState.getCost()) {
-						existingState.refreshCost(adjacentCost);
-						existingState.refreshMove(adjPuzzle.getSecond());
-					} else {
-						existingState = adjacentState;
-						parent.put(existingState, polledGridState);
+					int adjCost = polledState.getCost() + 1;
+					GridState<T> adjState = new GridState<T>(adjPuzzle.getFirst(), adjCost, adjPuzzle.getSecond());
+					
+					if(this.updateParents(adjState, polledState)) {
+						this.updateQueue(adjState);
 					}
-	
-					int index = gridStateQueue.indexOf(existingState);
-					if (index >= 0) {
-						GridState<T> state = gridStateQueue.get(index);
-						if (state.getCost() > existingState.getCost()) {
-							state.refreshCost(existingState.getCost());
-							Collections.sort(gridStateQueue, Collections.reverseOrder());
-						}
-					} else {
-						gridStateQueue.add(existingState);
-						Collections.sort(gridStateQueue, Collections.reverseOrder());
-					}
-	
 				}
 			}
 
 			++this.iterationsNumber;
-			polledGridState = gridStateQueue.poll();
+			polledState = this.stateQueue.poll();
 		}
-
-		GridState<T> previous = polledGridState;
-		while (parent.containsKey(previous)) {
-			this.history.addHead(previous.getMove());
-			previous = parent.get(previous);
-		}
-		this.stats.add(parent.getStatistics());
-		this.stats.add(gridStateQueue.getStatistics());
+		
+		this.saveStatisticsAndHistory(polledState);
 	}
 	
+	private boolean updateParents(GridState<T> currentState, GridState<T> parentState) {
+		GridState<T> existingState = this.parents.get(currentState);
+		
+		if (existingState == null) {
+			this.parents.put(currentState, parentState);
+			return true;
+		}
+		
+		if (currentState.getCost() < existingState.getCost()) {
+			existingState.refreshCost(currentState.getCost());
+			existingState.refreshMove(currentState.getMove());
+			return true;
+		} 
+		
+		return false;
+		
+	}
+	
+	private void updateQueue(GridState<T> state) {
+		int index = this.stateQueue.indexOf(state);
+		if (index != -1) {
+			GridState<T> existingState = this.stateQueue.get(index);
+			if (state.getCost() > existingState.getCost()) {
+				state.refreshCost(existingState.getCost());
+				Collections.sort(this.stateQueue, Collections.reverseOrder());
+			}
+		} else {
+			this.stateQueue.add(state);
+			Collections.sort(this.stateQueue, Collections.reverseOrder());
+		}
+	}
+	
+	private void saveStatisticsAndHistory(GridState<T> lastState) {
+		while (this.parents.containsKey(lastState)) {
+			this.history.addHead(lastState.getMove());
+			lastState = this.parents.get(lastState);
+		}
+		this.stats.add(this.parents.getStatistics());
+		this.stats.add(this.stateQueue.getStatistics());
+	}
+
 	@Override
 	public String toString() {
 		return "DFS Solver";
 	}
-
 }
