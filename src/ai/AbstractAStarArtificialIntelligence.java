@@ -7,8 +7,9 @@ import utils.HashMapWithCounters;
 import utils.Pair;
 import utils.PriorityQueueWithCounters;
 
-public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
+public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
 	
+	@Override
 	public void silentSolve() {
 		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
 	  	PriorityQueueWithCounters<GridState<T>> gridStateQueue = new PriorityQueueWithCounters<GridState<T>>();	  	
@@ -17,8 +18,7 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  	
 	  	while(!gridStateQueue.isEmpty()) {
 	  		GridState<T> polledGridState = gridStateQueue.poll();
-	  		
-	  		
+ 		  		
 	  		if(polledGridState.getGrid().isSolved()) {
   				System.out.println("WINNNEEEER");
   				
@@ -34,21 +34,25 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  		
 	  		List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
 
-  			int adjacentCost = polledGridState.getCost() + 1 + polledGridState.getGrid().getNbMisplacedTiles();
   			
 	  		for(Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
 	  			
+	  			int adjacentCost = polledGridState.getCost() + 1 + getHeuristic(adjPuzzle.getFirst());
+
 	  			GridState<T> adjacentState = new GridState<T>(adjPuzzle.getFirst(), adjacentCost, adjPuzzle.getSecond());
 	  			
 	  			if(parent.containsKey(adjacentState)) {
+	  				
 	  				GridState<T> existingState = parent.get(adjacentState);
 	  					
+	  				
 	  				if(adjacentCost < existingState.getCost()) {
 	  					existingState.refreshCost(adjacentCost);
 	  					existingState.refreshMove(adjPuzzle.getSecond());
 
 	  					gridStateQueue.add(adjacentState);
 	  				}
+	  				
 	  			} else {
 	  				parent.put(adjacentState, polledGridState);
   					gridStateQueue.add(adjacentState);
@@ -58,10 +62,9 @@ public class ASTARArtificialIntelligence<T> extends AbstractArtificialIntelligen
 	  		this.iterationsNumber++;
 	  	}		
 	}
+	
+	public abstract int getHeuristic(PuzzleGrid<T> puzzle);
 
-	@Override
-	public String toString() {
-		return "A* Algorithm";
-	}
+	
 
 }
