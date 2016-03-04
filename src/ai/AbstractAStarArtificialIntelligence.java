@@ -17,7 +17,7 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 		gridStateQueue.add(currentState);
 
   		GridState<T> polledGridState = gridStateQueue.poll();
-	  	while(polledGridState != null && !polledGridState.getGrid().isSolved()) {
+	  	while(!polledGridState.getGrid().isSolved()) {
  		  	List<Pair<PuzzleGrid<T>, Move>> adjacentsPuzzle = polledGridState.getGrid().getAdjacentPuzzles();
   			
 	  		for(Pair<PuzzleGrid<T>, Move> adjPuzzle : adjacentsPuzzle) {
@@ -39,15 +39,13 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 	  		polledGridState = gridStateQueue.poll();
 	  	}	
 
-	  	if (polledGridState.getGrid().isSolved()) {
-			GridState<T> previous = polledGridState;
-			while (parent.containsKey(previous)) {
-				this.history.addHead(previous.getMove());
-				previous = parent.get(previous);
-			}
-			this.stats.add(parent.getStatistics());
-			this.stats.add(gridStateQueue.getStatistics());
-	  	}
+		GridState<T> previous = polledGridState;
+		while (parent.containsKey(previous)) {
+			this.history.addHead(previous.getMove());
+			previous = parent.get(previous);
+		}
+		this.stats.add(parent.getStatistics());
+		this.stats.add(gridStateQueue.getStatistics());
 	}
 	
 	public abstract int getHeuristic(PuzzleGrid<T> puzzle);

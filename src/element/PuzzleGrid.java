@@ -230,7 +230,7 @@ public class PuzzleGrid<T> {
 		int count = 0;
 		for (int i = 0; i < this.getNbTiles(); i++) {
 			if(this.tiles.get(i).getSortedPosition() != i) {
-				count++;
+				++count;
 			}
 		}
 		return count;
@@ -238,10 +238,12 @@ public class PuzzleGrid<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null)
+		if (obj == null) {
 			  return false;
-		if (!(obj instanceof PuzzleGrid))
+		}
+		if (!(obj instanceof PuzzleGrid)) {
 		  return false;
+		}
 		
 		PuzzleGrid<T> puzzle = (PuzzleGrid<T>) obj;
 		for (int i = 0; i < this.getNbTiles(); i++) {
@@ -249,10 +251,7 @@ public class PuzzleGrid<T> {
 				return false;
 			}
 		}
-			
-			
+		
 		return true;
 	}
-	
-	
 }
