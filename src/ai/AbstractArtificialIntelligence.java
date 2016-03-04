@@ -19,6 +19,12 @@ public abstract class AbstractArtificialIntelligence<T> {
 		this.stats = new ArrayList<DataStructStats>();
 	}
 	
+	/**
+	 * Silent solve is used to pre-solve the grid and allow
+	 * player to get next move.
+	 * 
+	 * {@link #getNextMove()}
+	 */
 	protected abstract void silentSolve();
 
 	@Override
