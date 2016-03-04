@@ -22,6 +22,7 @@ import javax.swing.JToggleButton;
 
 import ai.AStarManhattanArtificialIntelligence;
 import ai.AStarMisplacedTilesArtificialIntelligence;
+import ai.AStarOutRowAndColumnArtificialIntelligence;
 import ai.AbstractArtificialIntelligence;
 import ai.BFSArtificialIntelligence;
 import ai.DFSArtificialIntelligence;
@@ -72,8 +73,8 @@ public class PanelControl extends JPanel implements ActionListener {
 		add(checkboxEditable);
 
 		listAI = new JComboBox<>(new AbstractArtificialIntelligence[] { new AStarManhattanArtificialIntelligence<>(),
-				new AStarMisplacedTilesArtificialIntelligence<>(), new BFSArtificialIntelligence<>(),
-				new DFSArtificialIntelligence<>() });
+				new AStarMisplacedTilesArtificialIntelligence<>(), new AStarOutRowAndColumnArtificialIntelligence<>(),
+				new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
 
 		add(listAI);
 
