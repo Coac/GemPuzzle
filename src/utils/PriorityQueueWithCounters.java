@@ -2,8 +2,9 @@ package utils;
 
 import java.util.PriorityQueue;
 
-public class PriorityQueueWithCounters<E> extends PriorityQueue<E>{
-private DataStructStats statistics;
+public class PriorityQueueWithCounters<E> extends PriorityQueue<E> {
+	private static final long serialVersionUID = 1L;
+	private DataStructStats statistics;
 	
 	public PriorityQueueWithCounters(){
 		super();

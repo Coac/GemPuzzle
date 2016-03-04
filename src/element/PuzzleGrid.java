@@ -153,7 +153,7 @@ public class PuzzleGrid<T> {
 	}
 
 	public boolean isSolved() {
-		for (int i = 0; i < this.getNbTiles(); i++) {
+		for (int i = 0; i < this.getNbTiles(); ++i) {
 			if (this.tiles.get(i).getSortedPosition() != i) {
 				return false;
 			}

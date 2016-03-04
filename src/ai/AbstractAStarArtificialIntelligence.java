@@ -25,23 +25,19 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 	  			GridState<T> adjacentState = new GridState<T>(adjPuzzle.getFirst(), adjacentCost, adjPuzzle.getSecond());
 
   				GridState<T> existingState = parent.get(adjacentState);
-	  			if(existingState != null) {
-	  				if(adjacentCost < existingState.getCost()) {
-	  					existingState.refreshCost(adjacentCost);
-	  					existingState.refreshMove(adjPuzzle.getSecond());
-
-	  					gridStateQueue.add(adjacentState);
-	  				}
+	  			if(existingState != null && adjacentCost < existingState.getCost()) {
+  					existingState.refreshCost(adjacentCost);
+  					existingState.refreshMove(adjPuzzle.getSecond());
 	  			} else {
 	  				parent.put(adjacentState, polledGridState);
-  					gridStateQueue.add(adjacentState);
 	  			}
+				gridStateQueue.add(adjacentState);
 	  		}
 
 	  		++this.iterationsNumber;
 	  		polledGridState = gridStateQueue.poll();
 	  	}	
-	  	
+
 	  	if (polledGridState.getGrid().isSolved()) {
 			GridState<T> previous = polledGridState;
 			while (parent.containsKey(previous)) {
