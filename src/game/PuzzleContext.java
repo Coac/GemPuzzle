@@ -2,6 +2,7 @@ package game;
 
 import ai.AbstractArtificialIntelligence;
 import element.PuzzleGrid;
+import game.Move.MoveDirection;
 
 public class PuzzleContext<T> {
 
@@ -27,12 +28,15 @@ public class PuzzleContext<T> {
 		return this.grid.isSolvable();
 	}
 
-	public boolean move(Move.MoveDirection move) {
-		if (this.grid.setMove(new Move(move))) {
-			history.add(new Move(move));
-			return true;
+	public boolean move(MoveDirection moveDirection) {
+		Move move = new Move(moveDirection);
+		if (!this.grid.canMove(move)) {
+			return false;
 		}
-		return false;
+		
+		this.grid.move(move);
+		history.add(move);
+		return true;
 	}
 
 	public History getHistory() {

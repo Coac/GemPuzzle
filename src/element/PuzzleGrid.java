@@ -82,37 +82,6 @@ public class PuzzleGrid<T> {
 		default:
 		}
 	}
-	
-	/**
-	 * @deprecated Use canMove followed by move instead.
-	 */
-	public boolean setMove(Move move) {
-		switch (move.get()) {
-		case Down:
-			if (nullIndex + size >= getNbTiles())
-				return false;
-			swapIndex(nullIndex, nullIndex + size);
-			break;
-		case Left:
-			if (nullIndex % size - 1 < 0)
-				return false;
-			swapIndex(nullIndex, nullIndex - 1);
-			break;
-		case Right:
-			if (nullIndex % size + 1 >= size)
-				return false;
-			swapIndex(nullIndex, nullIndex + 1);
-			break;
-		case Up:
-			if (nullIndex - size < 0)
-				return false;
-			swapIndex(nullIndex, nullIndex - size);
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
 
 	public int getTileIndex(Tile<T> t){
 		return this.tiles.indexOf(t);
