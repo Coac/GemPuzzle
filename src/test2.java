@@ -8,10 +8,14 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import ai.ASTARArtificialIntelligence;
+import ai.AbstractAStarArtificialIntelligence;
+import ai.AStarManhattanArtificialIntelligence;
+import ai.AStarMisplacedTilesArtificialIntelligence;
 import element.PuzzleGrid;
+import game.Move;
 import game.PuzzleContext;
 import parser.PuzzleGridsIntegerParser;
+import utils.Pair;
 
 public class test2 {
 	public static void main(String[] args) {
@@ -29,13 +33,18 @@ public class test2 {
 		System.out.println(puzzleContext.isSolved());
 				
 		
-		ASTARArtificialIntelligence<Integer> ai = new ASTARArtificialIntelligence<Integer>();
+		AbstractAStarArtificialIntelligence<Integer> ai = new AStarManhattanArtificialIntelligence<Integer>();
 		
 		ai.setGrid(puzzleContext.getGrid());
+		//System.out.println(puzzleContext.isSolvable());
 		
 		long time = System.nanoTime();
-		System.out.println(ai.solve().toString());
+	    System.out.println(ai.solve().toString());
+		
+		//aStarSolve(puzzleContext.getGrid());
 		System.out.println((System.nanoTime() - time) / 1000000 + " ms");
 	}
+	
+
 
 }

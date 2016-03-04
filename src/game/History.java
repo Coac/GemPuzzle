@@ -33,6 +33,10 @@ public class History {
 	public int size() {
 		return this.moves.size();
 	}
+
+	public void clear() {
+		this.moves.clear();
+	}
 	
 	@Override
 	public String toString() {

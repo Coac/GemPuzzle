@@ -27,9 +27,9 @@ public class PanelGame extends JPanel implements MoveListener {
 	public static final int MARGIN_CASE = 5;
 	public static final int MIN_SIZE_CASE = 42;
 
-	private double animationProgress = 1;
+	private double animationProgress;
 
-	private boolean editable = true;
+	private boolean editable;
 
 	private Rectangle[] rectangleCases;
 	private int selectedTile;
@@ -46,6 +46,9 @@ public class PanelGame extends JPanel implements MoveListener {
 		rectangleCases = null;
 		selectedTile = -1;
 
+		animationProgress = 1;
+		editable = false;
+
 		// Keypressed listener
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 			public boolean dispatchKeyEvent(KeyEvent e) {
@@ -53,15 +56,19 @@ public class PanelGame extends JPanel implements MoveListener {
 					switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP:
 						move(MoveDirection.Up);
+						checkWin();
 						break;
 					case KeyEvent.VK_DOWN:
 						move(MoveDirection.Down);
+						checkWin();
 						break;
 					case KeyEvent.VK_LEFT:
 						move(MoveDirection.Left);
+						checkWin();
 						break;
 					case KeyEvent.VK_RIGHT:
 						move(MoveDirection.Right);
+						checkWin();
 						break;
 					default:
 						break;
@@ -86,7 +93,7 @@ public class PanelGame extends JPanel implements MoveListener {
 						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
 					}
 
-					// windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
+					windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
 				}
 				selectedTile = -1;
 				repaint();
@@ -94,10 +101,33 @@ public class PanelGame extends JPanel implements MoveListener {
 
 			public void mousePressed(MouseEvent e) {
 				selectedTile = -1;
-				if (rectangleCases != null) {
+				if (editable && rectangleCases != null) {
 					for (int i = 0; i < rectangleCases.length; i++) {
 						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
 							selectedTile = i;
+						}
+					}
+				}
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				// TODO: move
+				if (rectangleCases != null && puzzleContext != null) {
+					for (int i = 0; i < rectangleCases.length; i++) {
+						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
+							if (i + 1 == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Left);
+								checkWin();
+							} else if (i - 1 == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Right);
+								checkWin();
+							} else if (i + puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Up);
+								checkWin();
+							} else if (i - puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Down);
+								checkWin();
+							}
 						}
 					}
 				}
@@ -114,7 +144,14 @@ public class PanelGame extends JPanel implements MoveListener {
 		});
 	}
 
-	public void move(MoveDirection moveDirection) {
+	public void checkWin() {
+		if (puzzleContext.isSolved()) {
+			JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	public boolean move(MoveDirection moveDirection) {
 		if (puzzleContext != null) {
 			if (puzzleContext.move(moveDirection)) {
 				windowGemPuzzle.getPanelHistory().updateHistory();
@@ -137,12 +174,10 @@ public class PanelGame extends JPanel implements MoveListener {
 					}
 				}).start();
 
-				if (puzzleContext.isSolved()) {
-					JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void drawTile(Graphics2D g, String str, int x, int y, int size) {
