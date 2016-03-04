@@ -27,9 +27,9 @@ public class PanelGame extends JPanel implements MoveListener {
 	public static final int MARGIN_CASE = 5;
 	public static final int MIN_SIZE_CASE = 42;
 
-	private double animationProgress = 1;
+	private double animationProgress;
 
-	private boolean editable = true;
+	private boolean editable;
 
 	private Rectangle[] rectangleCases;
 	private int selectedTile;
@@ -45,6 +45,9 @@ public class PanelGame extends JPanel implements MoveListener {
 
 		rectangleCases = null;
 		selectedTile = -1;
+		
+		animationProgress = 1;
+		editable = false;
 
 		// Keypressed listener
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
@@ -86,7 +89,7 @@ public class PanelGame extends JPanel implements MoveListener {
 						puzzleContext.getGrid().swapIndex(selectedTile, newTile);
 					}
 
-					// windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
+					windowGemPuzzle.getPanelControl().setSolvable(puzzleContext.isSolvable());
 				}
 				selectedTile = -1;
 				repaint();
@@ -94,10 +97,29 @@ public class PanelGame extends JPanel implements MoveListener {
 
 			public void mousePressed(MouseEvent e) {
 				selectedTile = -1;
-				if (rectangleCases != null) {
+				if (editable && rectangleCases != null) {
 					for (int i = 0; i < rectangleCases.length; i++) {
 						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
 							selectedTile = i;
+						}
+					}
+				}
+			}
+
+			public void mouseClicked(MouseEvent e) {
+				// TODO: move
+				if (rectangleCases != null && puzzleContext != null) {
+					for (int i = 0; i < rectangleCases.length; i++) {
+						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
+							if (i + 1 == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Left);
+							} else if (i - 1 == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Right);
+							} else if (i + puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Up);
+							} else if (i - puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
+								move(MoveDirection.Down);
+							}
 						}
 					}
 				}

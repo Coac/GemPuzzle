@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -42,23 +43,26 @@ public class PanelControl extends JPanel implements ActionListener {
 
 	private JComboBox listAI;
 	private JLabel labelSolvable;
+	private JCheckBox checkboxEditable;
 
 	private WindowGemPuzzle windowGemPuzzle;
 
 	public PanelControl(WindowGemPuzzle windowGemPuzzle) {
 		this.windowGemPuzzle = windowGemPuzzle;
 
-		JPanel panel1 = new JPanel();
 		buttonNew = new JButton("Nouveau");
 		buttonNew.addActionListener(this);
-		panel1.add(buttonNew);
+		add(buttonNew);
 		buttonOpen = new JButton("Ouvrir");
 		buttonOpen.addActionListener(this);
-		panel1.add(buttonOpen);
+		add(buttonOpen);
 		buttonSave = new JButton("Enregistrer");
 		buttonSave.addActionListener(this);
-		panel1.add(buttonSave);
-		add(panel1);
+		add(buttonSave);
+		
+		checkboxEditable = new JCheckBox("Editeur");
+		checkboxEditable.addActionListener(this);
+		add(checkboxEditable);
 
 		JComboBox<AbstractArtificialIntelligence> listAI = new JComboBox<>(
 				new AbstractArtificialIntelligence[] { new AStarMisplacedTilesArtificialIntelligence<>(),
@@ -242,6 +246,10 @@ public class PanelControl extends JPanel implements ActionListener {
 					}
 				}).start();
 			}
+			
+		}else if(e.getSource().equals(checkboxEditable)){
+			// Editor
+			windowGemPuzzle.getPanelGame().setEditable(checkboxEditable.isSelected());
 		}
 
 		windowGemPuzzle.getPanelHistory().updateHistory();

@@ -45,6 +45,7 @@ public class PanelHistory extends JPanel {
 				PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
 				if (puzzleContext != null) {
 					puzzleContext.getHistory().clear();
+					updateHistory();
 				}
 			}
 		});
