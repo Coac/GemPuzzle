@@ -45,7 +45,7 @@ public class PanelGame extends JPanel implements MoveListener {
 
 		rectangleCases = null;
 		selectedTile = -1;
-		
+
 		animationProgress = 1;
 		editable = false;
 
@@ -56,15 +56,19 @@ public class PanelGame extends JPanel implements MoveListener {
 					switch (e.getKeyCode()) {
 					case KeyEvent.VK_UP:
 						move(MoveDirection.Up);
+						checkWin();
 						break;
 					case KeyEvent.VK_DOWN:
 						move(MoveDirection.Down);
+						checkWin();
 						break;
 					case KeyEvent.VK_LEFT:
 						move(MoveDirection.Left);
+						checkWin();
 						break;
 					case KeyEvent.VK_RIGHT:
 						move(MoveDirection.Right);
+						checkWin();
 						break;
 					default:
 						break;
@@ -113,12 +117,16 @@ public class PanelGame extends JPanel implements MoveListener {
 						if (rectangleCases[i].intersects(e.getX(), e.getY(), 1, 1)) {
 							if (i + 1 == puzzleContext.getGrid().getNullIndex()) {
 								move(MoveDirection.Left);
+								checkWin();
 							} else if (i - 1 == puzzleContext.getGrid().getNullIndex()) {
 								move(MoveDirection.Right);
+								checkWin();
 							} else if (i + puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
 								move(MoveDirection.Up);
+								checkWin();
 							} else if (i - puzzleContext.getGrid().size() == puzzleContext.getGrid().getNullIndex()) {
 								move(MoveDirection.Down);
+								checkWin();
 							}
 						}
 					}
@@ -136,7 +144,14 @@ public class PanelGame extends JPanel implements MoveListener {
 		});
 	}
 
-	public void move(MoveDirection moveDirection) {
+	public void checkWin() {
+		if (puzzleContext.isSolved()) {
+			JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	public boolean move(MoveDirection moveDirection) {
 		if (puzzleContext != null) {
 			if (puzzleContext.move(moveDirection)) {
 				windowGemPuzzle.getPanelHistory().updateHistory();
@@ -159,12 +174,10 @@ public class PanelGame extends JPanel implements MoveListener {
 					}
 				}).start();
 
-				if (puzzleContext.isSolved()) {
-					JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void drawTile(Graphics2D g, String str, int x, int y, int size) {
