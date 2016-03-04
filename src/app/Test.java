@@ -2,6 +2,7 @@ package app;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import ai.AStarManhattanArtificialIntelligence;
 import ai.AbstractArtificialIntelligence;
 import ai.DFSArtificialIntelligence;
 import game.PuzzleContext;
