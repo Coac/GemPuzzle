@@ -145,7 +145,7 @@ public class PanelGame extends JPanel implements MoveListener {
 	}
 
 	public void checkWin() {
-		if (puzzleContext.isSolved()) {
+		if (puzzleContext != null && puzzleContext.isSolved()) {
 			JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
