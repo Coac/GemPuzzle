@@ -86,7 +86,7 @@ public class PuzzleGrid<T> {
 	}
 	
 	/**
-	 * @deprecated
+	 * @deprecated Use canMove followed by move instead.
 	 */
 	public boolean setMove(Move move) {
 		switch (move.get()) {
@@ -163,9 +163,6 @@ public class PuzzleGrid<T> {
 		return true;
 	}
 	
-	/**
-	 * Utilise les permutations afin de déterminer si la grille initiale est solvable.
-	 */
 	public boolean isSolvable(){
 		int[] indexes = this.getTilesIndexes();
 		int voidParity = 0;
@@ -196,7 +193,7 @@ public class PuzzleGrid<T> {
 				}
 			}
 		}
-		return ((voidParity%2)^(permutationsNumber%2)) == 0;
+		return ((voidParity % 2)^(permutationsNumber % 2)) == 0;
 	}
 	
 	@Override
@@ -215,30 +212,10 @@ public class PuzzleGrid<T> {
 	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		
-		Move up = new Move(MoveDirection.Up);
-		Move left = new Move(MoveDirection.Left);
-		Move down = new Move(MoveDirection.Down);
-		Move right = new Move(MoveDirection.Right);
-		
-		if(this.canMove(up)) {
-			PuzzleGrid<T> puzzleUp = this.clone();
-			puzzleUp.move(up);
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleUp, up));
-		}
-		if(this.canMove(left)) {
-			PuzzleGrid<T> puzzleLeft = this.clone();
-			puzzleLeft.move(left);
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleLeft, left));
-		}
-		if(this.canMove(down)) {
-			PuzzleGrid<T> puzzleDown = this.clone();
-			puzzleDown.move(down);
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleDown, down));
-		}
-		if(this.canMove(right)) {
-			PuzzleGrid<T> puzzleRight = this.clone();
-			puzzleRight.move(right);
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleRight, right));
+		for (Move move : Move.getMoves()) {
+			PuzzleGrid<T> puzzleMove = this.clone();
+			puzzleMove.move(move);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleMove, move));
 		}
 
 		return list;
