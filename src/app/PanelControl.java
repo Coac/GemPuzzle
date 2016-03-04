@@ -217,7 +217,7 @@ public class PanelControl extends JPanel implements ActionListener {
 		} else if (e.getSource().equals(buttonNext)) {
 			// Next move
 			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
-			if (puzzleContext != null) {
+			if (puzzleContext != null && !puzzleContext.isSolved()) {
 				AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
 				puzzleContext.setAI(ai);
 				windowGemPuzzle.getPanelGame().move(ai.getNextMove().get());
@@ -227,7 +227,7 @@ public class PanelControl extends JPanel implements ActionListener {
 		} else if (e.getSource().equals(buttonSolve)) {
 			// Solve
 			PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
-			if (puzzleContext != null) {
+			if (puzzleContext != null && !puzzleContext.isSolved()) {
 				final AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
 				puzzleContext.setAI(ai);
 				long time = System.nanoTime();
