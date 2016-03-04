@@ -1,18 +1,19 @@
 package ai;
 
+import java.util.Collections;
 import java.util.List;
 import element.PuzzleGrid;
 import game.Move;
 import utils.HashMapWithCounters;
+import utils.ListWithCounters;
 import utils.Pair;
-import utils.PriorityQueueWithCounters;
 
 public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArtificialIntelligence<T> {
 	
 	@Override
 	public void silentSolve() {
 		HashMapWithCounters<GridState<T>, GridState<T>> parent = new HashMapWithCounters<GridState<T>, GridState<T>>();
-	  	PriorityQueueWithCounters<GridState<T>> gridStateQueue = new PriorityQueueWithCounters<GridState<T>>();	  	
+		ListWithCounters<GridState<T>> gridStateQueue = new ListWithCounters<GridState<T>>();	  	
 		GridState<T> currentState = new GridState<T>(this.grid, 0, null);
 		gridStateQueue.add(currentState);
 
@@ -32,7 +33,21 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
 	  				existingState = adjacentState;
 	  				parent.put(existingState, polledGridState);
 	  			}
+	  			
+	  			
+	  			int index = gridStateQueue.indexOf(existingState);
+	  			if(index >= 0) {
+	  				GridState<T> state = gridStateQueue.get(index);
+	  				if (state.getCost() > existingState.getCost()) {
+	  					state.refreshCost(existingState.getCost());
+	  					Collections.sort(gridStateQueue);
+	  				}
+	  			}
+	  			else {
 				gridStateQueue.add(existingState);
+				Collections.sort(gridStateQueue);
+	  			}
+
 	  		}
 
 	  		++this.iterationsNumber;
