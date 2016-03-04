@@ -1,6 +1,5 @@
 package ai;
 
-import java.util.HashMap;
 import java.util.List;
 import element.PuzzleGrid;
 import game.Move;
