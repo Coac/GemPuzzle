@@ -20,30 +20,34 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import ai.AStarManhattanArtificialIntelligence;
 import ai.AStarMisplacedTilesArtificialIntelligence;
-import ai.AbstractAStarArtificialIntelligence;
 import ai.AbstractArtificialIntelligence;
 import ai.BFSArtificialIntelligence;
 import ai.DFSArtificialIntelligence;
 import element.PuzzleGrid;
 import element.Tile;
 import game.History;
+import game.Move.MoveDirection;
 import game.PuzzleContext;
 import parser.PuzzleGridsIntegerParser;
 
 @SuppressWarnings("serial")
 public class PanelControl extends JPanel implements ActionListener {
+	public static final int NB_SHUFFLE = 10;
 
 	private JButton buttonNew;
 	private JButton buttonOpen;
 	private JButton buttonSave;
+
+	private JButton buttonShuffle;
+	private JCheckBox checkboxEditable;
 
 	private JButton buttonSolve;
 	private JButton buttonNext;
 
 	private JComboBox listAI;
 	private JLabel labelSolvable;
-	private JCheckBox checkboxEditable;
 
 	private WindowGemPuzzle windowGemPuzzle;
 
@@ -59,14 +63,17 @@ public class PanelControl extends JPanel implements ActionListener {
 		buttonSave = new JButton("Enregistrer");
 		buttonSave.addActionListener(this);
 		add(buttonSave);
-		
+
+		buttonShuffle = new JButton("Mélanger");
+		buttonShuffle.addActionListener(this);
+		add(buttonShuffle);
 		checkboxEditable = new JCheckBox("Editeur");
 		checkboxEditable.addActionListener(this);
 		add(checkboxEditable);
 
-		JComboBox<AbstractArtificialIntelligence> listAI = new JComboBox<>(
-				new AbstractArtificialIntelligence[] { new AStarMisplacedTilesArtificialIntelligence<>(),
-						new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
+		listAI = new JComboBox<>(new AbstractArtificialIntelligence[] {
+				new AStarManhattanArtificialIntelligence<>(), new AStarMisplacedTilesArtificialIntelligence<>(),
+				new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
 
 		add(listAI);
 
@@ -213,8 +220,8 @@ public class PanelControl extends JPanel implements ActionListener {
 			if (puzzleContext != null) {
 				AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
 				puzzleContext.setAI(ai);
-				ai.setGrid(puzzleContext.getGrid());
 				windowGemPuzzle.getPanelGame().move(ai.getNextMove().get());
+				windowGemPuzzle.getPanelGame().checkWin();
 			}
 
 		} else if (e.getSource().equals(buttonSolve)) {
@@ -223,7 +230,6 @@ public class PanelControl extends JPanel implements ActionListener {
 			if (puzzleContext != null) {
 				final AbstractArtificialIntelligence ai = (AbstractArtificialIntelligence) listAI.getSelectedItem();
 				puzzleContext.setAI(ai);
-				ai.setGrid(puzzleContext.getGrid());
 				long time = System.nanoTime();
 				final History history = ai.solve();
 				final double elapsedTime = (System.nanoTime() - time);
@@ -246,10 +252,45 @@ public class PanelControl extends JPanel implements ActionListener {
 					}
 				}).start();
 			}
-			
-		}else if(e.getSource().equals(checkboxEditable)){
+
+		} else if (e.getSource().equals(checkboxEditable)) {
 			// Editor
 			windowGemPuzzle.getPanelGame().setEditable(checkboxEditable.isSelected());
+
+		} else if (e.getSource().equals(buttonShuffle)) {
+			// Shuffle
+			final PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
+			if (puzzleContext != null) {
+
+				new Thread(new Runnable() {
+					public void run() {
+						int nb = 0;
+						while (nb < NB_SHUFFLE) {
+							int random = (int) Math.round(3 * Math.random());
+							MoveDirection move = null;
+							if (random == 0) {
+								move = MoveDirection.Up;
+							} else if (random == 1) {
+								move = MoveDirection.Down;
+							} else if (random == 2) {
+								move = MoveDirection.Right;
+							} else if (random == 3) {
+								move = MoveDirection.Left;
+							}
+							if (windowGemPuzzle.getPanelGame().move(move)) {
+								try {
+									Thread.sleep(2000 / NB_SHUFFLE);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								nb++;
+							}
+						}
+						puzzleContext.getHistory().clear();
+						windowGemPuzzle.getPanelHistory().updateHistory();
+					}
+				}).start();
+			}
 		}
 
 		windowGemPuzzle.getPanelHistory().updateHistory();
