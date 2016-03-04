@@ -19,7 +19,7 @@ public class Pair<A, B> {
 
     public boolean equals(Object other) {
     	if (other instanceof Pair) {
-    		Pair<A,B> otherPair = (Pair) other;
+    		Pair<A,B> otherPair = (Pair<A, B>) other;
     		return 
     		((  this.first == otherPair.first ||
     			( this.first != null && otherPair.first != null &&
@@ -31,11 +31,11 @@ public class Pair<A, B> {
 
     	return false;
     }
-
-    public String toString()
-    { 
-           return "(" + first + ", " + second + ")"; 
-    }
+    
+    @Override
+	public String toString() {
+		return "(" + first + ", " + second + ")";
+	}
 
     public A getFirst() {
     	return first;
@@ -51,5 +51,5 @@ public class Pair<A, B> {
 
     public void setSecond(B second) {
     	this.second = second;
-    }
+	}
 }

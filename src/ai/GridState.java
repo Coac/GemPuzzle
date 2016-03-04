@@ -4,9 +4,9 @@ import element.PuzzleGrid;
 import game.Move;
 
 public class GridState<T> implements Comparable<GridState<T>> {
-	PuzzleGrid<T> grid;
-	int cost;
-	Move move;
+	private PuzzleGrid<T> grid;
+	private int cost;
+	private Move move;
 	
 	public GridState(PuzzleGrid<T> grid, int cost, Move move) {
 		this.grid = grid;
