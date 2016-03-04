@@ -2,10 +2,10 @@ package ai;
 
 import java.util.ArrayList;
 
+import utils.DataStructStats;
 import element.PuzzleGrid;
 import game.History;
 import game.Move;
-import utils.DataStructStats;
 
 public abstract class AbstractArtificialIntelligence<T> {
 	protected PuzzleGrid<T> grid;
@@ -13,12 +13,17 @@ public abstract class AbstractArtificialIntelligence<T> {
 	protected int currentMove;
 	protected ArrayList<DataStructStats> stats;
 	protected int iterationsNumber;
-	
+
 	public AbstractArtificialIntelligence() {
 		this.reset();
 		this.stats = new ArrayList<DataStructStats>();
 	}
 	
+	protected abstract void silentSolve();
+
+	@Override
+	public abstract String toString();
+
 	public void setGrid(PuzzleGrid<T> grid) {
 		this.grid = grid;
 		this.reset();
@@ -28,7 +33,7 @@ public abstract class AbstractArtificialIntelligence<T> {
 		this.reset();
 		this.history = new History();
 		this.silentSolve();
-		
+
 		return this.history;
 	}
 
@@ -36,33 +41,30 @@ public abstract class AbstractArtificialIntelligence<T> {
 		if (this.history == null) {
 			this.solve();
 		}
-		
+
 		return this.history.get(this.currentMove++);
 	}
-	
+
 	private void reset() {
 		this.history = null;
 		this.currentMove = 0;
 		this.stats = new ArrayList<DataStructStats>();
 		this.iterationsNumber = 0;
-		
+
 	}
-	
-	protected abstract void silentSolve();
-	
-	public abstract String toString();
-	
+
 	/**
-	 * Return the add count, remove count and maximum size of each
-	 * data structure as objects
+	 * Return the add count, remove count and maximum size of each data
+	 * structure as objects
+	 * 
 	 * @return the statistics of each data structure
 	 * @see DataStructStats
 	 */
-	public ArrayList<DataStructStats> getStatistics(){
+	public ArrayList<DataStructStats> getStatistics() {
 		return this.stats;
 	}
-	
-	public int getIterationsNumber(){
+
+	public int getIterationsNumber() {
 		return this.iterationsNumber;
 	}
 }

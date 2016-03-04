@@ -40,7 +40,7 @@ public class GridState<T> implements Comparable<GridState<T>> {
 			return false;
 		}
 		
-		return ((GridState) obj).getGrid().equals(this.grid);
+		return ((GridState<T>) obj).getGrid().equals(this.grid);
 	}
 
 	@Override
