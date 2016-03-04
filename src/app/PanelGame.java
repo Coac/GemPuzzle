@@ -45,7 +45,7 @@ public class PanelGame extends JPanel implements MoveListener {
 
 		rectangleCases = null;
 		selectedTile = -1;
-		
+
 		animationProgress = 1;
 		editable = false;
 
@@ -143,8 +143,8 @@ public class PanelGame extends JPanel implements MoveListener {
 			}
 		});
 	}
-	
-	public void checkWin(){
+
+	public void checkWin() {
 		if (puzzleContext.isSolved()) {
 			JOptionPane.showMessageDialog(windowGemPuzzle, "Bravo, vous avez gagné !", "Win",
 					JOptionPane.INFORMATION_MESSAGE);

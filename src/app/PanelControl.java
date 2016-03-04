@@ -71,9 +71,9 @@ public class PanelControl extends JPanel implements ActionListener {
 		checkboxEditable.addActionListener(this);
 		add(checkboxEditable);
 
-		listAI = new JComboBox<>(new AbstractArtificialIntelligence[] {
-				new AStarManhattanArtificialIntelligence<>(), new AStarMisplacedTilesArtificialIntelligence<>(),
-				new BFSArtificialIntelligence<>(), new DFSArtificialIntelligence<>() });
+		listAI = new JComboBox<>(new AbstractArtificialIntelligence[] { new AStarManhattanArtificialIntelligence<>(),
+				new AStarMisplacedTilesArtificialIntelligence<>(), new BFSArtificialIntelligence<>(),
+				new DFSArtificialIntelligence<>() });
 
 		add(listAI);
 
@@ -261,7 +261,6 @@ public class PanelControl extends JPanel implements ActionListener {
 			// Shuffle
 			final PuzzleContext puzzleContext = windowGemPuzzle.getPanelGame().getPuzzleContext();
 			if (puzzleContext != null) {
-
 				new Thread(new Runnable() {
 					public void run() {
 						int nb = 0;
