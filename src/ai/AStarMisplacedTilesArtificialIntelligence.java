@@ -12,7 +12,7 @@ public class AStarMisplacedTilesArtificialIntelligence<T> extends AbstractAStarA
 	
 	@Override
 	public String toString() {
-		return "A* Algorithm";
+		return "A* Algorithm MisplacedTiles";
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import ai.AbstractAStarArtificialIntelligence;
+import ai.AStarManhattanArtificialIntelligence;
 import ai.AStarMisplacedTilesArtificialIntelligence;
 import element.PuzzleGrid;
 import game.Move;
@@ -32,7 +33,7 @@ public class test2 {
 		System.out.println(puzzleContext.isSolved());
 				
 		
-		AbstractAStarArtificialIntelligence<Integer> ai = new AStarMisplacedTilesArtificialIntelligence<Integer>();
+		AbstractAStarArtificialIntelligence<Integer> ai = new AStarManhattanArtificialIntelligence<Integer>();
 		
 		ai.setGrid(puzzleContext.getGrid());
 		//System.out.println(puzzleContext.isSolvable());
