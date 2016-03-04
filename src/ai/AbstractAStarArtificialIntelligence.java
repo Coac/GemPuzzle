@@ -29,9 +29,10 @@ public abstract class AbstractAStarArtificialIntelligence<T> extends AbstractArt
   					existingState.refreshCost(adjacentCost);
   					existingState.refreshMove(adjPuzzle.getSecond());
 	  			} else {
-	  				parent.put(adjacentState, polledGridState);
+	  				existingState = adjacentState;
+	  				parent.put(existingState, polledGridState);
 	  			}
-				gridStateQueue.add(adjacentState);
+				gridStateQueue.add(existingState);
 	  		}
 
 	  		++this.iterationsNumber;
