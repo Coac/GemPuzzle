@@ -47,7 +47,47 @@ public class PuzzleGrid<T> {
 	public T getElement(int i, int j) {
 		return this.getTile(i, j).getValue();
 	}
-
+	
+	public boolean canMove(Move move) {
+		switch (move.get()) {
+		case Down:
+			return !(nullIndex + size >= getNbTiles());
+		case Left:
+			return !(nullIndex % size - 1 < 0);
+		case Right:
+			return !(nullIndex % size + 1 >= size);
+		case Up:
+			return !(nullIndex - size < 0);
+		default:
+			return false;
+		}
+	}
+	
+	public void move(Move move) {
+		if (!this.canMove(move)) {
+			return;
+		}
+		
+		switch (move.get()) {
+		case Down:
+			 this.swapIndex(nullIndex, nullIndex + size);
+			 break;
+		case Left:
+			this.swapIndex(nullIndex, nullIndex - 1);
+			break;
+		case Right:
+			this.swapIndex(nullIndex, nullIndex + 1);
+			break;
+		case Up:
+			this.swapIndex(nullIndex, nullIndex - size);
+			break;
+		default:
+		}
+	}
+	
+	/**
+	 * @deprecated
+	 */
 	public boolean setMove(Move move) {
 		switch (move.get()) {
 		case Down:
@@ -175,25 +215,30 @@ public class PuzzleGrid<T> {
 	public List<Pair<PuzzleGrid<T>, Move>> getAdjacentPuzzles() {
 		List<Pair<PuzzleGrid<T>, Move>> list = new ArrayList<Pair<PuzzleGrid<T>, Move>>();
 		
-		if(this.setMove(new Move(MoveDirection.Up))) {
+		Move up = new Move(MoveDirection.Up);
+		Move left = new Move(MoveDirection.Left);
+		Move down = new Move(MoveDirection.Down);
+		Move right = new Move(MoveDirection.Right);
+		
+		if(this.canMove(up)) {
 			PuzzleGrid<T> puzzleUp = this.clone();
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleUp, new Move(MoveDirection.Up)));
-			this.setMove(new Move(MoveDirection.Down));
-		}		
-		if(this.setMove(new Move(MoveDirection.Left))) {
+			puzzleUp.move(up);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleUp, up));
+		}
+		if(this.canMove(left)) {
 			PuzzleGrid<T> puzzleLeft = this.clone();
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleLeft, new Move(MoveDirection.Left)));
-			this.setMove(new Move(Move.MoveDirection.Right));
+			puzzleLeft.move(left);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleLeft, left));
 		}
-		if(this.setMove(new Move(MoveDirection.Down))) {
+		if(this.canMove(down)) {
 			PuzzleGrid<T> puzzleDown = this.clone();
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleDown, new Move(MoveDirection.Down)));
-			this.setMove(new Move(MoveDirection.Up));
+			puzzleDown.move(down);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleDown, down));
 		}
-		if(this.setMove(new Move(MoveDirection.Right))) {
+		if(this.canMove(right)) {
 			PuzzleGrid<T> puzzleRight = this.clone();
-			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleRight, new Move(MoveDirection.Right)));
-			this.setMove(new Move(MoveDirection.Left));
+			puzzleRight.move(right);
+			list.add(new Pair<PuzzleGrid<T>, Move>(puzzleRight, right));
 		}
 
 		return list;
